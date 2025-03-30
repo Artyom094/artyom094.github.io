@@ -5,106 +5,146 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CityVibes - Inicio</title>
     <link rel="stylesheet" href="style/styles.css">
+    <style>
+        .place-item {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .place-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .place-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        
+        .place-details {
+            padding: 15px;
+        }
+        
+        .place-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .place-address {
+            font-size: 0.9em;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .place-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .place-category {
+            background-color: var(--gray-light);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        
+        .place-price {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .section-title {
+            margin: 20px 0;
+            font-size: 1.3em;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+        
+        .view-on-maps {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-size: 0.9em;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .view-on-maps:hover {
+            background-color: #3872c0;
+        }
+        
+        /* Estilo para debug */
+        #debugInfo {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            font-size: 0.8em;
+            color: #555;
+            white-space: pre-wrap;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
         <!-- Cabecera -->
         <div class="header responsive-header">
-            <div class="avatar-container">
-                <a href="profile.html" class="avatar responsive-avatar" id="avatarBtn">
-                    <img src="/api/placeholder/40/40" alt="Avatar" id="userAvatar">
-                </a>
-                <!-- Menú desplegable del avatar -->
-                <div class="avatar-menu" id="avatarMenu">
-                    <div class="avatar-menu-header">
-                        <img src="/api/placeholder/40/40" alt="Avatar" id="menuUserAvatar">
-                        <div class="user-info">
-                            <span class="Tittle" id="userName">CityVibe</span>
-                        </div>
-                    </div>
-                    <div class="avatar-menu-items">
-                        <a href="profile.html" class="avatar-menu-item">
-                            <span class="icon">👤</span>
-                            Mi Perfil
-                        </a>
-                        <a href="settings.html" class="avatar-menu-item">
-                            <span class="icon">⚙️</span>
-                            Configuración
-                        </a>
-                        <div class="menu-divider"></div>
-                        <a href="#" class="avatar-menu-item logout" id="logoutBtn">
-                            <span class="icon">🚪</span>
-                            Cerrar Sesión
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <h1 class="responsive-title" id="welcomeMessage">Bienvenido a City Vibe</h1>
+            <a href="profile.html" class="avatar responsive-avatar">
+                <img src="/api/placeholder/40/40" alt="Avatar" id="userAvatar">
+            </a>
+            <h1 class="responsive-title">City Vibes</h1>
         </div>
-        
+
         <!-- Menú principal con accesos directos -->
-        <div class="main-menu" id="categoriesMenu">
-            <a href="#" class="menu-item" data-category="restaurants">
-                <div class="menu-icon">🍽️</div>
-                <span class="menu-text">Restaurantes</span>
-            </a>
-            <a href="#" class="menu-item" data-category="clubs">
-                <div class="menu-icon">🎵</div>
-                <span class="menu-text">Antros</span>
-            </a>
-            <a href="#" class="menu-item" data-category="bars">
-                <div class="menu-icon">🍸</div>
-                <span class="menu-text">Bares</span>
-            </a>
-            <a href="#" class="menu-item" data-category="cafes">
-                <div class="menu-icon">☕</div>
-                <span class="menu-text">Cafeterías</span>
-            </a>
-            <a href="#" class="menu-item" data-category="all">
-                <div class="menu-icon">🏠</div>
-                <span class="menu-text">Todos</span>
-            </a>
-        </div>
-
-        <!-- Menú de otras categorías -->
-        <div class="other-categories">
-            <button class="more-categories-btn" id="moreCategoriesBtn">
-                Ver más categorías
-            </button>
-        </div>
-
-        <!-- Modal de categorías adicionales -->
-        <div class="modal" id="categoriesModal">
-            <div class="modal-content">
-                <h2>Otras Categorías</h2>
-                <div class="categories-grid" id="extraCategories">
-                    <!-- Se llenará dinámicamente -->
-                    <div class="loading-indicator">Cargando categorías...</div>
-                </div>
-                <div class="modal-actions">
-                    <button class="close-btn" id="closeCategoriesBtn">Cerrar</button>
-                </div>
-            </div>
-        </div>
+       
 
         <!-- Contenedor para categoría activa y resultados -->
         <div class="content responsive-content">
             <!-- Indicador de categoría activa -->
             <div id="activeCategory" class="active-category" style="display: none;">
-                <span class="category-label"></span>
-                <button class="clear-category">✕</button>
+                <span class="category-label" id="categoryLabel"></span>
+                <button class="clear-category" id="clearCategoryBtn">✕</button>
             </div>
+
+            <!-- Título de la sección destacada -->
+            <h2 class="section-title">
+                <span class="icon">🔥</span> Lo popular de la semana
+            </h2>
 
             <div id="categoryResults" class="place-list responsive-list">
                 <!-- Contenido inicial -->
-                <div class="initial-message">
-                    Selecciona una categoría para ver lugares
+                <div class="initial-message" id="initialMessage">
+                    Cargando lugares populares...
                 </div>
                 <!-- Indicador de carga -->
-                <div class="loading-indicator" style="display: none;">
+                <div class="loading-indicator" id="loadingIndicator" style="display: none;">
                     Cargando...
                 </div>
             </div>
+            
+            <!-- Información de depuración (oculta por defecto) -->
+            <div id="debugInfo"></div>
         </div>
         
         <!-- Navegación inferior -->
@@ -117,152 +157,12 @@
                 <div class="nav-icon">🗺️</div>
                 <span class="nav-text">Mapa</span>
             </a>
-            <a href="resenas.html" class="nav-item">
-                <div class="nav-icon">⭐</div>
-                <span class="nav-text">Reseñas</span>
+            <a href="news.html" class="nav-item">
+                <div class="nav-icon">🕛</div>
+                <span class="nav-text">Ultimos</span>
             </a>
         </nav>
-
-        <!-- Modal para agregar lugar -->
-        <div class="modal" id="addPlaceModal">
-            <div class="modal-content">
-                <h2>Agregar Nuevo Lugar</h2>
-                <form id="addPlaceForm">
-                    <div class="form-group">
-                        <label for="placeName">Nombre del lugar</label>
-                        <input type="text" id="placeName" name="name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="placeCategory">Categoría</label>
-                        <select id="placeCategory" name="category" required>
-                            <option value="">Seleccionar categoría</option>
-                            <!-- Se llenará dinámicamente -->
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="placeAddress">Dirección</label>
-                        <input type="text" id="placeAddress" name="address" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="placeDescription">Descripción</label>
-                        <textarea id="placeDescription" name="description" rows="3" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Características</label>
-                        <div class="features-grid">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="features" value="parking">
-                                Estacionamiento
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="features" value="wifi">
-                                WiFi
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="features" value="accessible">
-                                Accesible
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="features" value="outdoor">
-                                Área exterior
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="cancel-btn" id="cancelAddPlace">Cancelar</button>
-                        <button type="submit" class="submit-btn">Agregar lugar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
-
-    <!-- Agregar botón flotante para nuevo lugar -->
-    <button class="floating-btn" id="addPlaceBtn">
-        <span class="icon">➕</span>
-    </button>
-    <script src="js/sessionCheck.js"></script>
-    <script>
-        // ...existing code...
-
-// Modal functionality for adding new places
-const addPlaceBtn = document.getElementById('addPlaceBtn');
-const addPlaceModal = document.getElementById('addPlaceModal');
-const cancelAddPlaceBtn = document.getElementById('cancelAddPlace');
-const addPlaceForm = document.getElementById('addPlaceForm');
-const placeCategorySelect = document.getElementById('placeCategory');
-
-// Populate categories in the select element
-const categories = [
-    { id: 'restaurants', name: 'Restaurantes' },
-    { id: 'clubs', name: 'Antros' },
-    { id: 'bars', name: 'Bares' },
-    { id: 'cafes', name: 'Cafeterías' }
-];
-
-// Fill categories in select
-categories.forEach(category => {
-    const option = document.createElement('option');
-    option.value = category.id;
-    option.textContent = category.name;
-    placeCategorySelect.appendChild(option);
-});
-
-// Show modal when clicking the add button
-addPlaceBtn.addEventListener('click', () => {
-    addPlaceModal.style.display = 'block';
-});
-
-// Hide modal when clicking cancel
-cancelAddPlaceBtn.addEventListener('click', () => {
-    addPlaceModal.style.display = 'none';
-    addPlaceForm.reset();
-});
-
-// Close modal when clicking outside
-window.addEventListener('click', (e) => {
-    if (e.target === addPlaceModal) {
-        addPlaceModal.style.display = 'none';
-        addPlaceForm.reset();
-    }
-});
-
-// Handle form submission
-addPlaceForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(addPlaceForm);
-    const placeData = {
-        name: formData.get('name'),
-        category: formData.get('category'),
-        address: formData.get('address'),
-        description: formData.get('description'),
-        features: formData.getAll('features')
-    };
-
-    try {
-        // Here you would typically send the data to your backend
-        // For now, we'll just log it and close the modal
-        console.log('Place data:', placeData);
-        
-        // Clear form and close modal
-        addPlaceForm.reset();
-        addPlaceModal.style.display = 'none';
-        
-        // Show success message (you can customize this)
-        alert('Lugar agregado exitosamente!');
-        
-    } catch (error) {
-        console.error('Error adding place:', error);
-        alert('Error al agregar el lugar. Por favor intenta de nuevo.');
-    }
-});
-    </script>
-    <script src="js/indexjs.js"></script>
+    <script src="js/places-service.js"></script>
 </body>
 </html>

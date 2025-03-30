@@ -5,15 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CityVibes - Mapa</title>
     <link rel="stylesheet" href="style/styles.css">
+    <style>
+        .place-item {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            padding: 12px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .place-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .place-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .place-name {
+            font-weight: 600;
+            font-size: 1em;
+        }
+        
+        .place-category {
+            background-color: var(--gray-light);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            color: var(--primary-color);
+        }
+        
+        .place-address {
+            font-size: 0.9em;
+            color: var(--gray);
+        }
+        
+        .map-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .error-message {
+            padding: 15px;
+            background-color: #ffebee;
+            color: #c62828;
+            border-radius: var(--border-radius);
+            margin: 10px 0;
+        }
+        
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: var(--gray);
+        }
+        
+        .category-filters {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            background: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: var(--text-color);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
         <!-- Cabecera -->
         <div class="header responsive-header">
             <a href="profile.html" class="avatar responsive-avatar">
-                <img src="/api/placeholder/40/40" alt="Avatar">
+                <img src="/api/placeholder/40/40" alt="Avatar" id="userAvatar">
             </a>
-            <h1 class="responsive-title">USUARIO_NAME</h1>
+            <h1 class="responsive-title">City Vibes</h1>
         </div>
         
         <!-- Contenido del mapa -->
@@ -26,22 +112,26 @@
             </div>
             
             <div class="map-container responsive-map">
-                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1rS_p_MhYbN6Pc9IJgkFFMc67n3VyCv0&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>
-                <div class="map-controls responsive-controls">
+                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1rS_p_MhYbN6Pc9IJgkFFMc67n3VyCv0&ehbc=2E312F&noprof=1" width="640" height="480" class="map-iframe"></iframe>
+                <div class="map-buttons">
                     <button class="map-btn" id="locationBtn">📍 Mi ubicación</button>
-                    <div class="map-filters">
-                        <button class="filter-btn active" data-category="all">Todos</button>
-                        <button class="filter-btn" data-category="restaurants">🍽️ Restaurantes</button>
-                        <button class="filter-btn" data-category="bars">🍸 Bares</button>
-                    </div>
                 </div>
             </div>
             
+            <!-- Categorías debajo del mapa -->
+            <div class="category-filters">
+                <button class="filter-btn active" data-category="all">Todos</button>
+                <button class="filter-btn" data-category="Restaurante">🍽️ Restaurantes</button>
+                <button class="filter-btn" data-category="Bar">🍸 Bares</button>
+                <button class="filter-btn" data-category="Cafetería">☕ Cafeterías</button>
+                <button class="filter-btn" data-category="Antro">🎵 Antros</button>
+            </div>
+            
             <div class="nearby-places">
-                <h3 class="section-title responsive-subtitle">Lugares cercanos</h3>
+                <h3 class="section-title responsive-subtitle">Lugares disponibles</h3>
                 <div id="placesList" class="place-list responsive-list">
                     <!-- Los lugares se cargarán dinámicamente -->
-                    <div class="loading-placeholder">Buscando lugares cercanos...</div>
+                    <div class="loading-placeholder">Cargando lugares...</div>
                 </div>
             </div>
         </div>
@@ -60,75 +150,372 @@
                 <div class="nav-icon">⭐</div>
                 <span class="nav-text">Reseñas</span>
             </a>
-            <a href="insignias.html" class="nav-item">
-                <div class="nav-icon">🏅</div>
-                <span class="nav-text">Insignias</span>
-            </a>
         </nav>
     </div>
 
     <!-- Scripts -->
-    <script src="js/mapService.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const locationBtn = document.getElementById('locationBtn');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos DOM
+            const filterButtons = document.querySelectorAll('.filter-btn');
             const searchInput = document.getElementById('searchInput');
+            const locationBtn = document.getElementById('locationBtn');
             const placesList = document.getElementById('placesList');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-
-            // Inicializar mapa
-            mapService.initMap('map');
-
-            // Manejar click en botón de ubicación
-            locationBtn.addEventListener('click', async () => {
+            
+            // URL de la API
+            const API_URL = 'https://cityvibesplaces.d1.mockoon.app/api/places';
+            
+            // Variable para almacenar todos los lugares
+            let allPlaces = [];
+            let filteredPlaces = [];
+            
+            // Cargar todos los lugares al inicio
+            loadAllPlaces();
+            
+            /**
+             * Carga todos los lugares de la API
+             */
+            async function loadAllPlaces() {
                 try {
-                    loadingOverlay.style.display = 'flex';
-                    const position = await mapService.getCurrentLocation();
-                    const nearbyPlaces = await mapService.getNearbyPlaces(position);
-                    renderPlacesList(nearbyPlaces);
+                    showLoading(true);
+                    
+                    // Intentar obtener datos de la API
+                    const response = await fetch(API_URL, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        mode: 'cors'
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Error HTTP: ${response.status}`);
+                    }
+                    
+                    allPlaces = await response.json();
+                    console.log('Lugares cargados:', allPlaces.length);
+                    
+                    // Mostrar todos los lugares inicialmente
+                    filteredPlaces = [...allPlaces];
+                    displayPlaces(filteredPlaces);
+                    
+                    showLoading(false);
                 } catch (error) {
-                    showError('No se pudo obtener la ubicación');
-                } finally {
-                    loadingOverlay.style.display = 'none';
+                    console.error('Error al cargar lugares:', error);
+                    showLoading(false);
+                    showError('No se pudieron cargar los lugares. Intenta de nuevo más tarde.');
                 }
-            });
-
-            // Función para renderizar lista de lugares
-            function renderPlacesList(places) {
-                if (!places.length) {
+            }
+            
+            /**
+             * Filtra los lugares por categoría
+             * @param {string} category - Categoría seleccionada ('all' para todos)
+             */
+            function filterByCategory(category) {
+                // Si no hay lugares cargados, mostrar error
+                if (allPlaces.length === 0) {
+                    showError('No hay lugares disponibles para filtrar.');
+                    return;
+                }
+                
+                // Actualizar UI de botones
+                filterButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.category === category);
+                });
+                
+                // Filtrar lugares
+                if (category === 'all') {
+                    filteredPlaces = [...allPlaces];
+                } else {
+                    filteredPlaces = allPlaces.filter(place => place.Category === category);
+                }
+                
+                // Mostrar lugares filtrados
+                displayPlaces(filteredPlaces);
+            }
+            
+            /**
+             * Muestra los lugares en la lista
+             * @param {Array} places - Lista de lugares a mostrar
+             */
+            function displayPlaces(places) {
+                if (!placesList) return;
+                
+                // Si no hay lugares
+                if (places.length === 0) {
+                    placesList.innerHTML = `
+                        <div class="no-results">No se encontraron lugares en esta categoría</div>
+                    `;
+                    return;
+                }
+                
+                placesList.innerHTML = '';
+                
+                // Crear elemento para cada lugar
+                places.forEach(place => {
+                    const placeElement = document.createElement('div');
+                    placeElement.className = 'place-item';
+                    placeElement.dataset.id = place.Id_Place;
+                    
+                    placeElement.innerHTML = `
+                        <div class="place-info">
+                            <span class="place-name">${place.Name}</span>
+                            <span class="place-category">${place.Category}</span>
+                        </div>
+                        <div class="place-address">${place.Address}</div>
+                    `;
+                    
+                    // Evento para abrir ubicación en Google Maps
+                    placeElement.addEventListener('click', function() {
+                        if (place.Maps_URL) {
+                            window.open(place.Maps_URL, '_blank');
+                        } else if (place.Latitude && place.Longitude) {
+                            window.open(`https://www.google.com/maps?q=${place.Latitude},${place.Longitude}`, '_blank');
+                        }
+                    });
+                    
+                    placesList.appendChild(placeElement);
+                });
+            }
+            
+            /**
+             * Busca lugares por texto
+             * @param {string} searchText - Texto a buscar
+             */
+            function searchPlaces(searchText) {
+                // Si no hay lugares cargados, mostrar error
+                if (allPlaces.length === 0) {
+                    showError('No hay lugares disponibles para buscar.');
+                    return;
+                }
+                
+                if (!searchText) {
+                    // Si no hay texto, restaurar filtro de categoría actual
+                    const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
+                    filterByCategory(activeCategory);
+                    return;
+                }
+                
+                const lowerSearch = searchText.toLowerCase();
+                
+                // Conseguir la categoría actualmente seleccionada
+                const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
+                
+                // Filtrar por texto dentro de la categoría seleccionada
+                let results = allPlaces.filter(place => {
+                    // Primero verificar si cumple con el filtro de categoría
+                    const matchesCategory = activeCategory === 'all' || place.Category === activeCategory;
+                    if (!matchesCategory) return false;
+                    
+                    // Luego verificar si coincide con el texto
+                    return (
+                        place.Name.toLowerCase().includes(lowerSearch) ||
+                        place.Address.toLowerCase().includes(lowerSearch)
+                    );
+                });
+                
+                // Mostrar resultados
+                displayPlaces(results);
+            }
+            
+            /**
+             * Obtiene la ubicación del usuario
+             */
+            function getUserLocation() {
+                // Si no hay lugares cargados, mostrar error
+                if (allPlaces.length === 0) {
+                    showError('No hay lugares disponibles para encontrar cercanos.');
+                    return;
+                }
+                
+                if (!navigator.geolocation) {
+                    showError('La geolocalización no está disponible en tu navegador');
+                    return;
+                }
+                
+                showLoading(true);
+                
+                navigator.geolocation.getCurrentPosition(
+                    // Éxito
+                    position => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        console.log('Ubicación del usuario:', lat, lng);
+                        
+                        // Calcular distancia para cada lugar
+                        const placesWithDistance = allPlaces.map(place => {
+                            const placeCoords = {
+                                lat: parseFloat(place.Latitude),
+                                lng: parseFloat(place.Longitude)
+                            };
+                            
+                            // Calcular distancia con Haversine
+                            const distance = calculateDistance(
+                                lat, lng, 
+                                placeCoords.lat, placeCoords.lng
+                            );
+                            
+                            return {
+                                ...place,
+                                distance,
+                                distanceText: formatDistance(distance)
+                            };
+                        });
+                        
+                        // Ordenar por proximidad
+                        placesWithDistance.sort((a, b) => a.distance - b.distance);
+                        
+                        // Mostrar resultados
+                        document.querySelector('.section-title').textContent = 'Lugares cercanos';
+                        displayPlacesWithDistance(placesWithDistance);
+                        
+                        showLoading(false);
+                    },
+                    // Error
+                    error => {
+                        console.error('Error de geolocalización:', error);
+                        showError('No se pudo obtener tu ubicación');
+                        showLoading(false);
+                    }
+                );
+            }
+            
+            /**
+             * Muestra lugares con su distancia al usuario
+             * @param {Array} places - Lista de lugares con distancia
+             */
+            function displayPlacesWithDistance(places) {
+                if (!placesList) return;
+                
+                placesList.innerHTML = '';
+                
+                if (places.length === 0) {
                     placesList.innerHTML = '<div class="no-results">No se encontraron lugares cercanos</div>';
                     return;
                 }
-
-                placesList.innerHTML = places.map(place => `
-                    <div class="place-item" data-id="${place.id}">
+                
+                places.forEach(place => {
+                    const placeElement = document.createElement('div');
+                    placeElement.className = 'place-item';
+                    placeElement.dataset.id = place.Id_Place;
+                    
+                    placeElement.innerHTML = `
                         <div class="place-info">
-                            <span class="place-name">${place.name}</span>
-                            <span class="place-distance">${place.distance}</span>
+                            <span class="place-name">${place.Name}</span>
+                            <span class="place-category">${place.Category}</span>
                         </div>
-                        <div class="place-rating">⭐ ${place.rating}</div>
-                    </div>
-                `).join('');
+                        <div class="place-address">${place.Address}</div>
+                        <div class="place-distance">Distancia: ${place.distanceText}</div>
+                    `;
+                    
+                    // Evento para abrir ubicación en Google Maps
+                    placeElement.addEventListener('click', function() {
+                        if (place.Maps_URL) {
+                            window.open(place.Maps_URL, '_blank');
+                        } else if (place.Latitude && place.Longitude) {
+                            window.open(`https://www.google.com/maps?q=${place.Latitude},${place.Longitude}`, '_blank');
+                        }
+                    });
+                    
+                    placesList.appendChild(placeElement);
+                });
             }
-
-            // Función para mostrar errores
+            
+            /**
+             * Calcula la distancia entre dos puntos usando Haversine
+             * @param {number} lat1 - Latitud del punto 1
+             * @param {number} lon1 - Longitud del punto 1
+             * @param {number} lat2 - Latitud del punto 2
+             * @param {number} lon2 - Longitud del punto 2
+             * @returns {number} - Distancia en kilómetros
+             */
+            function calculateDistance(lat1, lon1, lat2, lon2) {
+                const R = 6371; // Radio de la tierra en km
+                const dLat = toRad(lat2 - lat1);
+                const dLon = toRad(lon2 - lon1);
+                
+                const a = 
+                    Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+                
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                return R * c;
+            }
+            
+            /**
+             * Convierte grados a radianes
+             * @param {number} value - Valor en grados
+             * @returns {number} - Valor en radianes
+             */
+            function toRad(value) {
+                return value * Math.PI / 180;
+            }
+            
+            /**
+             * Formatea la distancia para mostrarla
+             * @param {number} distance - Distancia en kilómetros
+             * @returns {string} - Distancia formateada
+             */
+            function formatDistance(distance) {
+                if (distance < 1) {
+                    return `${Math.round(distance * 1000)} m`;
+                } else {
+                    return `${distance.toFixed(1)} km`;
+                }
+            }
+            
+            /**
+             * Muestra u oculta el indicador de carga
+             * @param {boolean} show - True para mostrar, false para ocultar
+             */
+            function showLoading(show) {
+                const loadingElement = document.querySelector('.loading-placeholder');
+                if (loadingElement) {
+                    loadingElement.style.display = show ? 'block' : 'none';
+                }
+            }
+            
+            /**
+             * Muestra un mensaje de error
+             * @param {string} message - Mensaje de error
+             */
             function showError(message) {
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'error-message';
-                errorDiv.textContent = message;
+                if (!placesList) return;
+                
+                const errorElement = document.createElement('div');
+                errorElement.className = 'error-message';
+                errorElement.textContent = message;
+                
                 placesList.innerHTML = '';
-                placesList.appendChild(errorDiv);
+                placesList.appendChild(errorElement);
             }
-
-            // Ajustar altura del mapa según el dispositivo
-            const mapContainer = document.querySelector('.map-container');
-            if (mapContainer) {
-                const viewportHeight = window.innerHeight;
-                mapContainer.style.height = width >= 768 ? '60vh' : '40vh';
+            
+            // Event Listeners
+            
+            // Filtrado por categorías
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    filterByCategory(category);
+                });
+            });
+            
+            // Búsqueda de lugares
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function(e) {
+                    if (e.key === 'Enter') {
+                        searchPlaces(this.value.trim());
+                    }
+                });
             }
-
-            window.addEventListener('resize', handleResize);
-            handleResize();
+            
+            // Botón de ubicación
+            if (locationBtn) {
+                locationBtn.addEventListener('click', getUserLocation);
+            }
         });
     </script>
 </body>

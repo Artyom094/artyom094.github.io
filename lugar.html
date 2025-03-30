@@ -5,6 +5,281 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CityVibes - Detalles del Lugar</title>
     <link rel="stylesheet" href="style/styles.css">
+    <style>
+        /* Estilos adicionales para la página de detalles */
+        .place-images {
+            margin-bottom: 20px;
+        }
+        
+        .place-image-main {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+        }
+        
+        .place-image-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .place-image-thumbnails {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .image-thumbnail {
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .image-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .place-info-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .place-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .place-title-container {
+            flex: 1;
+        }
+        
+        .place-title-container h2 {
+            margin: 0 0 5px 0;
+            font-size: 1.5em;
+        }
+        
+        .place-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+        
+        .rating-stars {
+            color: #ffc107;
+        }
+        
+        .place-category {
+            background: var(--gray-light);
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .detail-icon {
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+        
+        .place-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .action-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            padding: 8px;
+            flex: 1;
+        }
+        
+        .action-icon {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .action-text {
+            font-size: 0.8em;
+        }
+        
+        .section-title {
+            margin: 20px 0 15px 0;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+        
+        .description-content {
+            background: var(--white);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            line-height: 1.5;
+            box-shadow: var(--shadow);
+        }
+        
+        .place-map {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+            height: 250px;
+            box-shadow: var(--shadow);
+        }
+        
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .add-review-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .similar-places {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .similar-place-info {
+            padding: 12px;
+        }
+        
+        .similar-place-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.1em;
+        }
+        
+        .similar-place-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: var(--gray);
+        }
+        
+        .similar-place-category {
+            background: var(--gray-light);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        
+        .similar-place-rating {
+            color: #ffc107;
+        }
+        
+        /* Estilos para modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5em;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        
+        /* Estilos para errores */
+        .error-message {
+            background: #ffebee;
+            color: #e57373;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .back-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (min-width: 768px) {
+            .place-image-main {
+                height: 300px;
+            }
+            
+            .place-actions {
+                justify-content: flex-start;
+                gap: 30px;
+            }
+            
+            .action-button {
+                flex: 0 1 auto;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -18,32 +293,9 @@
                 <button class="action-btn" id="shareBtn">
                     <span class="icon">🔗</span>
                 </button>
-                <button class="action-btn" id="favoriteBtn">
-                    <span class="icon">❤️</span>
-                </button>
             </div>
         </div>
         
-        <!-- Contenido principal -->
-        <div class="content responsive-content">
-            <!-- Imágenes del lugar -->
-            <div class="place-images" id="placeImages">
-                <div class="place-image-main">
-                    <img src="/api/placeholder/600/300" alt="Imagen del lugar" id="mainImage">
-                </div>
-                <div class="place-image-thumbnails" id="imageThumbnails">
-                    <!-- Las miniaturas se cargarán dinámicamente -->
-                </div>
-            </div>
-            
-            <!-- Información básica -->
-            <div class="place-info-card">
-                <div class="place-header">
-                    <div class="place-title-container">
-                        <h2 id="placeTitle">Cargando...</h2>
-                        <div class="place-rating">
-                            <span id="placeRating">0.0</span>
-                            <span class="rating-stars" id="ratingStars">⭐⭐⭐⭐⭐</span>
                             <span class="rating-count" id="reviewCount">(0 reseñas)</span>
                         </div>
                     </div>
@@ -73,26 +325,14 @@
                 </div>
                 
                 <div class="place-actions">
-                    <button class="action-button" id="callButton">
-                        <span class="action-icon">📞</span>
-                        <span class="action-text">Llamar</span>
-                    </button>
                     <button class="action-button" id="directionsButton">
                         <span class="action-icon">🗺️</span>
                         <span class="action-text">Cómo llegar</span>
                     </button>
-                    <button class="action-button" id="reviewButton">
-                        <span class="action-icon">⭐</span>
-                        <span class="action-text">Reseña</span>
+                    <button class="action-button" id="shareBtn">
+                        <span class="action-icon">🔗</span>
+                        <span class="action-text">Compartir</span>
                     </button>
-                </div>
-            </div>
-            
-            <!-- Características del lugar -->
-            <div class="features-section">
-                <h3 class="section-title">Características</h3>
-                <div class="features-grid" id="featuresGrid">
-                    <!-- Se cargarán dinámicamente -->
                 </div>
             </div>
             
@@ -120,75 +360,10 @@
                 </div>
             </div>
             
-            <!-- Reseñas -->
-            <div class="reviews-section">
-                <div class="reviews-header">
-                    <h3 class="section-title">Reseñas</h3>
-                    <button class="add-review-btn" id="addReviewBtn">
-                        <span class="icon">✍️</span> Escribir reseña
-                    </button>
-                </div>
-                <div class="reviews-summary">
-                    <div class="rating-big">
-                        <span id="avgRating">0.0</span>
-                        <div class="rating-stars-big" id="avgRatingStars">⭐⭐⭐⭐⭐</div>
-                        <span class="reviews-count" id="totalReviews">Basado en 0 reseñas</span>
-                    </div>
-                    <div class="rating-bars">
-                        <div class="rating-bar">
-                            <span class="rating-label">5</span>
-                            <div class="bar-container">
-                                <div class="bar" id="bar5" style="width: 0%"></div>
-                            </div>
-                            <span class="rating-count" id="count5">0</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span class="rating-label">4</span>
-                            <div class="bar-container">
-                                <div class="bar" id="bar4" style="width: 0%"></div>
-                            </div>
-                            <span class="rating-count" id="count4">0</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span class="rating-label">3</span>
-                            <div class="bar-container">
-                                <div class="bar" id="bar3" style="width: 0%"></div>
-                            </div>
-                            <span class="rating-count" id="count3">0</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span class="rating-label">2</span>
-                            <div class="bar-container">
-                                <div class="bar" id="bar2" style="width: 0%"></div>
-                            </div>
-                            <span class="rating-count" id="count2">0</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span class="rating-label">1</span>
-                            <div class="bar-container">
-                                <div class="bar" id="bar1" style="width: 0%"></div>
-                            </div>
-                            <span class="rating-count" id="count1">0</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Lista de reseñas -->
-                <div class="reviews-list" id="reviewsList">
-                    <!-- Se cargarán dinámicamente -->
-                    <div class="loading-indicator">Cargando reseñas...</div>
-                </div>
-                
-                <button class="see-more-btn" id="loadMoreReviews">
-                    Ver más reseñas
-                </button>
-            </div>
-            
             <!-- Lugares similares -->
             <div class="similar-places-section">
                 <h3 class="section-title">Lugares similares</h3>
                 <div class="similar-places" id="similarPlaces">
-                    <!-- Se cargarán dinámicamente -->
                     <div class="loading-indicator">Cargando lugares similares...</div>
                 </div>
             </div>
@@ -204,70 +379,11 @@
                 <div class="nav-icon">🗺️</div>
                 <span class="nav-text">Mapa</span>
             </a>
-            <a href="resenas.html" class="nav-item">
-                <div class="nav-icon">⭐</div>
-                <span class="nav-text">Reseñas</span>
-            </a>
-            <a href="insignias.html" class="nav-item">
-                <div class="nav-icon">🏅</div>
-                <span class="nav-text">Insignias</span>
+            <a href="news.html" class="nav-item">
+                <div class="nav-icon">🕛</div>
+                <span class="nav-text">Ultimos</span>
             </a>
         </nav>
-    </div>
-
-    <!-- Modal para agregar reseña -->
-    <div class="modal" id="reviewModal">
-        <div class="modal-content">
-            <h2>Escribe tu reseña</h2>
-            <form id="reviewForm">
-                <div class="form-group">
-                    <label for="userRating">Calificación</label>
-                    <div class="rating-input">
-                        <div class="star-rating">
-                            <span class="star" data-rating="1">★</span>
-                            <span class="star" data-rating="2">★</span>
-                            <span class="star" data-rating="3">★</span>
-                            <span class="star" data-rating="4">★</span>
-                            <span class="star" data-rating="5">★</span>
-                        </div>
-                        <input type="hidden" id="userRating" name="rating" value="0" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="reviewText">Tu reseña</label>
-                    <textarea id="reviewText" name="content" rows="4" placeholder="Comparte tu experiencia en este lugar..." required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="reviewPhotos">Fotos (opcional)</label>
-                    <div class="photo-upload">
-                        <input type="file" id="reviewPhotos" name="photos" accept="image/*" multiple>
-                        <div class="upload-preview" id="photoPreview"></div>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="cancel-btn" id="cancelReview">Cancelar</button>
-                    <button type="submit" class="submit-btn">Publicar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para fotos -->
-    <div class="modal" id="photoModal">
-        <div class="modal-content photo-modal">
-            <button class="close-modal" id="closePhotoModal">×</button>
-            <div class="photo-gallery">
-                <div class="gallery-main">
-                    <img src="/api/placeholder/800/600" id="galleryMainImage" alt="Foto del lugar">
-                </div>
-                <div class="gallery-nav" id="galleryNav">
-                    <!-- Se cargarán dinámicamente -->
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Modal para compartir -->
@@ -302,36 +418,8 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/config.js"></script>
-    <script src="js/authService.js"></script>
-    <script src="js/placeService.js"></script>
-    <script src="js/reviewService.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Verificar autenticación
-            if (!authService.isAuthenticated()) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Obtener ID del lugar de la URL (ejemplo: lugar.html?id=123)
-            const urlParams = new URLSearchParams(window.location.search);
-            const placeId = urlParams.get('id');
-            
-            if (!placeId) {
-                showError('No se ha especificado un lugar');
-                return;
-            }
-
-            // Configurar elementos DOM
-            const elements = {
-                placeName: document.getElementById('placeName'),
-                placeTitle: document.getElementById('placeTitle'),
-                placeRating: document.getElementById('placeRating'),
-                ratingStars: document.getElementById('ratingStars'),
-                reviewCount: document.getElementById('reviewCount'),
-                placeCategory: document.getElementById('placeCategory'),
-                categoryIcon: document.getElementById('categoryIcon'),
-                categoryName: document.
+    <!-- Scripts necesarios -->
+    <script src="js/place-service.js"></script>
+    <script src="js/place-detail-controller.js"></script>
+</body>
+</html>

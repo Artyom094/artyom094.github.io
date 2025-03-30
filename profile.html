@@ -22,63 +22,36 @@
             <!-- Sección de perfil de usuario mejorada -->
             <div class="user-profile-section">
                 <div class="user-profile-header">
-                    <div class="user-avatar-large">
-                        <img src="/api/placeholder/120/120" alt="Profile" id="userAvatar">
+                    <div class="user-avatar-large" id="userAvatarContainer">
+                        <img src="/api/placeholder/120/120" alt="Profile" id="userAvatar" onclick="changeAvatar()">
+                        <input type="file" id="avatarInput" style="display: none;" accept="image/*">
                     </div>
                     <div class="user-details">
-                        <h2 class="user-name-large" id="userName">Cargando...</h2>
-                        <p class="user-bio" id="userBio">Cargando biografía...</p>
+                        <h2 class="user-name-large" id="userName" contenteditable="true">Cargando...</h2>
+                        <p class="user-bio" id="userBio" contenteditable="true">Cargando biografía...</p>
                     </div>
                 </div>
 
-                <div class="user-stats">
-                    <div class="user-stat-item">
-                        <div class="stat-number" id="visitCount">0</div>
-                        <div class="stat-label">Visitas</div>
-                    </div>
-                    <div class="user-stat-item">
-                        <div class="stat-number" id="reviewCount">0</div>
-                        <div class="stat-label">Reseñas</div>
-                    </div>
-                    <div class="user-stat-item">
-                        <div class="stat-number" id="placeCount">0</div>
-                        <div class="stat-label">Lugares</div>
-                    </div>
-                    <div class="user-stat-item">
-                        <div class="stat-number" id="badgeCount">0</div>
-                        <div class="stat-label">Insignias</div>
-                    </div>
-                </div>
-            </div>
+                <div class="settings-sections">
+                    <!-- Información Personal -->
+                    <div class="settings-section">
+                        <div class="settings-section danger-zone">
+                            <div class="danger-actions">
 
-            <!-- Resto del contenido existente... -->
-            <div class="profile-sections">
-                <!-- Categorías Favoritas -->
-                <div class="profile-section">
-                    <h3>Categorías Favoritas</h3>
-                    <div class="categories-grid" id="favoriteCategories">
-                        <div class="loading-indicator">Cargando categorías...</div>
+                        <button type="button" class="warning-btn" id="logoutBtn">
+                            Cerrar sesión
+                        </button>
+                        </div></div>
                     </div>
-                </div>
-
-                <!-- Lugares Agregados -->
-                <div class="profile-section">
-                    <h3>Mis Lugares</h3>
-                    <div class="places-grid" id="userPlaces">
-                        <div class="loading-indicator">Cargando lugares...</div>
-                    </div>
-                </div>
-
-                <!-- Actividad Reciente -->
-                <div class="profile-section">
-                    <h3>Actividad Reciente</h3>
-                    <div class="activity-timeline" id="recentActivity">
-                        <div class="loading-indicator">Cargando actividad...</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+
+    <!-- Incluir script para edición del perfil -->
+<script src="js/profileEdit.js"></script>
+<script src="js/sessionCheck.js"></script>
+
+<script src="js/logout.js"></script>
+
     <script src="js/profile.js"></script>
 </body>
 </html>
