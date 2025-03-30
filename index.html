@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes - Inicio</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabecera -->
+        <div class="header responsive-header">
+            <div class="avatar-container">
+                <a href="profile.html" class="avatar responsive-avatar" id="avatarBtn">
+                    <img src="/api/placeholder/40/40" alt="Avatar" id="userAvatar">
+                </a>
+                <!-- Menú desplegable del avatar -->
+                <div class="avatar-menu" id="avatarMenu">
+                    <div class="avatar-menu-header">
+                        <img src="/api/placeholder/40/40" alt="Avatar" id="menuUserAvatar">
+                        <div class="user-info">
+                            <span class="Tittle" id="userName">CityVibe</span>
+                        </div>
+                    </div>
+                    <div class="avatar-menu-items">
+                        <a href="profile.html" class="avatar-menu-item">
+                            <span class="icon">👤</span>
+                            Mi Perfil
+                        </a>
+                        <a href="settings.html" class="avatar-menu-item">
+                            <span class="icon">⚙️</span>
+                            Configuración
+                        </a>
+                        <div class="menu-divider"></div>
+                        <a href="#" class="avatar-menu-item logout" id="logoutBtn">
+                            <span class="icon">🚪</span>
+                            Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <h1 class="responsive-title" id="welcomeMessage">Cargando...</h1>
+        </div>
+        
+        <!-- Menú principal con accesos directos -->
+        <div class="main-menu" id="categoriesMenu">
+            <a href="#" class="menu-item" data-category="restaurants">
+                <div class="menu-icon">🍽️</div>
+                <span class="menu-text">Restaurantes</span>
+            </a>
+            <a href="#" class="menu-item" data-category="clubs">
+                <div class="menu-icon">🎵</div>
+                <span class="menu-text">Antros</span>
+            </a>
+            <a href="#" class="menu-item" data-category="bars">
+                <div class="menu-icon">🍸</div>
+                <span class="menu-text">Bares</span>
+            </a>
+            <a href="#" class="menu-item" data-category="cafes">
+                <div class="menu-icon">☕</div>
+                <span class="menu-text">Cafeterías</span>
+            </a>
+            <a href="#" class="menu-item" data-category="recreation">
+                <div class="menu-icon">🎮</div>
+                <span class="menu-text">Centros de recreación</span>
+            </a>
+            <a href="#" class="menu-item" data-category="all">
+                <div class="menu-icon">🏠</div>
+                <span class="menu-text">Todos</span>
+            </a>
+        </div>
+
+        <!-- Menú de otras categorías -->
+        <div class="other-categories">
+            <button class="more-categories-btn" id="moreCategoriesBtn">
+                Ver más categorías
+            </button>
+        </div>
+
+        <!-- Modal de categorías adicionales -->
+        <div class="modal" id="categoriesModal">
+            <div class="modal-content">
+                <h2>Otras Categorías</h2>
+                <div class="categories-grid" id="extraCategories">
+                    <!-- Se llenará dinámicamente -->
+                    <div class="loading-indicator">Cargando categorías...</div>
+                </div>
+                <div class="modal-actions">
+                    <button class="close-btn" id="closeCategoriesBtn">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor para categoría activa y resultados -->
+        <div class="content responsive-content">
+            <!-- Indicador de categoría activa -->
+            <div id="activeCategory" class="active-category" style="display: none;">
+                <span class="category-label"></span>
+                <button class="clear-category">✕</button>
+            </div>
+
+            <div id="categoryResults" class="place-list responsive-list">
+                <!-- Contenido inicial -->
+                <div class="initial-message">
+                    Selecciona una categoría para ver lugares
+                </div>
+                <!-- Indicador de carga -->
+                <div class="loading-indicator" style="display: none;">
+                    Cargando...
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav responsive-nav">
+            <a href="index.html" class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="mapa.html" class="nav-item">
+                <div class="nav-icon">🗺️</div>
+                <span class="nav-text">Mapa</span>
+            </a>
+            <a href="resenas.html" class="nav-item">
+                <div class="nav-icon">⭐</div>
+                <span class="nav-text">Reseñas</span>
+            </a>
+        </nav>
+
+        <!-- Modal para agregar lugar -->
+        <div class="modal" id="addPlaceModal">
+            <div class="modal-content">
+                <h2>Agregar Nuevo Lugar</h2>
+                <form id="addPlaceForm">
+                    <div class="form-group">
+                        <label for="placeName">Nombre del lugar</label>
+                        <input type="text" id="placeName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="placeCategory">Categoría</label>
+                        <select id="placeCategory" name="category" required>
+                            <option value="">Seleccionar categoría</option>
+                            <!-- Se llenará dinámicamente -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="placeAddress">Dirección</label>
+                        <input type="text" id="placeAddress" name="address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="placeDescription">Descripción</label>
+                        <textarea id="placeDescription" name="description" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Características</label>
+                        <div class="features-grid">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="parking">
+                                Estacionamiento
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="wifi">
+                                WiFi
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="accessible">
+                                Accesible
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="outdoor">
+                                Área exterior
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" id="cancelAddPlace">Cancelar</button>
+                        <button type="submit" class="submit-btn">Agregar lugar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agregar botón flotante para nuevo lugar -->
+    <button class="floating-btn" id="addPlaceBtn">
+        <span class="icon">➕</span>
+    </button>
+    <script src="js/sessionCheck.js"></script>
+
+    <script src="js/indexjs.js"></script>
+</body>
+</html>

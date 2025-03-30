@@ -1,0 +1,79 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>CityVibes - Iniciar Sesión</title>
+        <link rel="stylesheet" href="style/styles.css">
+        <style>
+            #loginStatus {
+                margin-top: 15px;
+                padding: 10px;
+                border-radius: 4px;
+                text-align: center;
+                display: none;
+            }
+            
+            .error-message {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+            
+            .success-message {
+                background-color: #d4edda;
+                color: #155724;
+            }
+            
+            .info-message {
+                background-color: #d1ecf1;
+                color: #0c5460;
+            }
+        </style>
+    </head>
+    <body class="auth-page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>CityVibes</h1>
+                    <p>Inicia sesión para continuar</p>
+                </div>
+
+                <!-- Formulario de Login -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <div class="password-input">
+                            <input type="password" id="loginPassword" name="password" required>
+                            <button type="button" class="toggle-password">👁️</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember">
+                            Recordar sesión
+                        </label>
+                        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Iniciar Sesión</button>
+                </form>
+
+                <!-- Estado del login -->
+                <div id="loginStatus"></div>
+                
+                <div class="auth-links">
+                    <p>¿No tienes una cuenta? <a href="register.html">Regístrate</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts necesarios -->
+        <script src="js/login.js"></script>
+    </body>
+    </html>

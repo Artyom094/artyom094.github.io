@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityVibes - Reseñas</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabecera -->
+        <div class="header responsive-header">
+            <a href="profile.html" class="avatar responsive-avatar">
+                <img src="/api/placeholder/40/40" alt="Avatar" id="userAvatar">
+            </a>
+            <h1 class="responsive-title">Reseñas</h1>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="content responsive-content">
+            <!-- Categorías de reseñas -->
+            <div class="reviews-tabs">
+                <button class="tab-btn active" data-category="all">Todas</button>
+                <button class="tab-btn" data-category="restaurants">Restaurantes</button>
+                <button class="tab-btn" data-category="bars">Bares</button>
+                <button class="tab-btn" data-category="cafes">Cafeterías</button>
+                <button class="tab-btn" data-category="clubs">Antros</button>
+            </div>
+
+            <!-- Lista de reseñas -->
+            <div class="reviews-container" id="reviewsList">
+                <div class="loading-indicator">Cargando reseñas...</div>
+            </div>
+
+            <!-- Botón para agregar reseña -->
+            <button class="floating-btn" id="addReviewBtn">
+                <span class="icon">✍️</span>
+            </button>
+        </div>
+
+        <!-- Modal para agregar reseña -->
+        <div class="modal" id="reviewModal">
+            <div class="modal-content">
+                <h2>Nueva Reseña</h2>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="placeSelect">Lugar</label>
+                        <select id="placeSelect" name="placeId" required>
+                            <option value="">Seleccionar lugar</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating">Calificación</label>
+                        <div class="rating-input">
+                            <input type="number" id="rating" name="rating" min="1" max="5" required>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewText">Tu reseña</label>
+                        <textarea id="reviewText" name="content" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" id="cancelReview">Cancelar</button>
+                        <button type="submit" class="submit-btn">Publicar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav responsive-nav">
+            <a href="index.html" class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="mapa.html" class="nav-item">
+                <div class="nav-icon">🗺️</div>
+                <span class="nav-text">Mapa</span>
+            </a>
+            <a href="resenas.html" class="nav-item active">
+                <div class="nav-icon">⭐</div>
+                <span class="nav-text">Reseñas</span>
+            </a>
+            <a href="insignias.html" class="nav-item">
+                <div class="nav-icon">🏅</div>
+                <span class="nav-text">Insignias</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/authService.js"></script>
+    <script src="js/reviewService.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Verificar autenticación
+            if (!authService.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const reviewsList = document.getElementById('reviewsList');
+            const reviewModal = document.getElementById('reviewModal');
+            const reviewForm = document.getElementById('reviewForm');
+            const addReviewBtn = document.getElementById('addReviewBtn');
+            const cancelReviewBtn = document.getElementById('cancelReview');
+
+            // Cargar reseñas iniciales
+            loadReviews();
+
+            // Manejar cambio de categorías
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    await loadReviews(btn.dataset.category);
+                });
+            });
+
+            // Mostrar/ocultar modal
+            addReviewBtn.addEventListener('click', () => {
+                reviewModal.style.display = 'block';
+            });
+
+            cancelReviewBtn.addEventListener('click', () => {
+                reviewModal.style.display = 'none';
+                reviewForm.reset();
+            });
+
+            // Manejar envío de reseña
+            reviewForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(reviewForm);
+                try {
+                    await reviewService.addReview(Object.fromEntries(formData));
+                    reviewModal.style.display = 'none';
+                    reviewForm.reset();
+                    await loadReviews();
+                } catch (error) {
+                    console.error('Error adding review:', error);
+                }
+            });
+
+            async function loadReviews(category = null) {
+                try {
+                    reviewsList.innerHTML = '<div class="loading-indicator">Cargando reseñas...</div>';
+                    const reviews = await reviewService.getReviews(category);
+                    renderReviews(reviews);
+                } catch (error) {
+                    reviewsList.innerHTML = '<div class="error-message">Error al cargar las reseñas</div>';
+                }
+            }
+
+            function renderReviews(reviews) {
+                if (!reviews.length) {
+                    reviewsList.innerHTML = '<div class="no-results">No hay reseñas para mostrar</div>';
+                    return;
+                }
+
+                reviewsList.innerHTML = reviews.map(review => `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="${review.userAvatar}" alt="User" class="review-avatar">
+                            <div class="review-info">
+                                <h3>${review.placeName}</h3>
+                                <div class="review-meta">
+                                    <span class="review-author">${review.userName}</span>
+                                    <span class="review-date">${new Date(review.date).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-rating">${'⭐'.repeat(review.rating)}</div>
+                        <p class="review-content">${review.content}</p>
+                    </div>
+                `).join('');
+            }
+        });
+    </script>
+</body>
+</html>

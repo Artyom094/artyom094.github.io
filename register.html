@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes - Registro</title>
+    <link rel="stylesheet" href="style/styles.css">
+    <style>
+        .auth-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+        
+        .auth-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .auth-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .auth-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .input-hint {
+            font-size: 0.8em;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+        
+        .password-requirements {
+            font-size: 0.8em;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        input.valid {
+            border-color: #2ecc71 !important;
+        }
+        
+        input.invalid {
+            border-color: #e74c3c !important;
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>CityVibes</h1>
+                <p>Crea una cuenta nueva</p>
+            </div>
+
+            <!-- Formulario de Registro -->
+            <form id="registerForm" class="auth-form">
+                <div class="form-section">
+                    <h3>Información de Registro</h3>
+                    
+                    <div class="form-group">
+                        <label for="username">Nombre de usuario</label>
+                        <input type="text" id="username" name="username" 
+                               pattern="[a-zA-Z0-9_]{3,15}" 
+                               title="3-15 caracteres, solo letras, números y guiones bajos"
+                               required>
+                        <div class="input-hint">
+                            El nombre de usuario debe tener entre 3 y 15 caracteres
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Correo electrónico</label>
+                        <input type="email" id="registerEmail" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Contraseña</label>
+                        <div class="password-input">
+                            <input type="password" id="registerPassword" name="password" 
+                                   minlength="8"
+                                   required>
+                            <button type="button" class="toggle-password">👁️</button>
+                        </div>
+                        <div class="password-requirements">
+                            Mínimo 8 caracteres, incluyendo números y letras
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmar contraseña</label>
+                        <div class="password-input">
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                            <button type="button" class="toggle-password">👁️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="terms" required>
+                        Acepto los <a href="#" class="terms-link">términos y condiciones</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">Registrarse</button>
+            </form>
+
+            <div class="auth-message"></div>
+            
+            <div class="auth-links">
+                <p>¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts necesarios -->
+    <script src="js/registerService.js"></script>
+</body>
+</html>

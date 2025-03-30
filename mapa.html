@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes - Mapa</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabecera -->
+        <div class="header responsive-header">
+            <a href="profile.html" class="avatar responsive-avatar">
+                <img src="/api/placeholder/40/40" alt="Avatar">
+            </a>
+            <h1 class="responsive-title">USUARIO_NAME</h1>
+        </div>
+        
+        <!-- Contenido del mapa -->
+        <div class="content responsive-content">
+            <div class="map-header">
+                <h2 class="map-title responsive-title">Mapa</h2>
+                <div class="map-search">
+                    <input type="text" id="searchInput" placeholder="Buscar lugares..." class="search-input">
+                </div>
+            </div>
+            
+            <div class="map-container responsive-map">
+                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1rS_p_MhYbN6Pc9IJgkFFMc67n3VyCv0&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>
+                <div class="map-controls responsive-controls">
+                    <button class="map-btn" id="locationBtn">📍 Mi ubicación</button>
+                    <div class="map-filters">
+                        <button class="filter-btn active" data-category="all">Todos</button>
+                        <button class="filter-btn" data-category="restaurants">🍽️ Restaurantes</button>
+                        <button class="filter-btn" data-category="bars">🍸 Bares</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nearby-places">
+                <h3 class="section-title responsive-subtitle">Lugares cercanos</h3>
+                <div id="placesList" class="place-list responsive-list">
+                    <!-- Los lugares se cargarán dinámicamente -->
+                    <div class="loading-placeholder">Buscando lugares cercanos...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav responsive-nav">
+            <a href="index.html" class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="mapa.html" class="nav-item active">
+                <div class="nav-icon">🗺️</div>
+                <span class="nav-text">Mapa</span>
+            </a>
+            <a href="resenas.html" class="nav-item">
+                <div class="nav-icon">⭐</div>
+                <span class="nav-text">Reseñas</span>
+            </a>
+            <a href="insignias.html" class="nav-item">
+                <div class="nav-icon">🏅</div>
+                <span class="nav-text">Insignias</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/mapService.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const locationBtn = document.getElementById('locationBtn');
+            const searchInput = document.getElementById('searchInput');
+            const placesList = document.getElementById('placesList');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            // Inicializar mapa
+            mapService.initMap('map');
+
+            // Manejar click en botón de ubicación
+            locationBtn.addEventListener('click', async () => {
+                try {
+                    loadingOverlay.style.display = 'flex';
+                    const position = await mapService.getCurrentLocation();
+                    const nearbyPlaces = await mapService.getNearbyPlaces(position);
+                    renderPlacesList(nearbyPlaces);
+                } catch (error) {
+                    showError('No se pudo obtener la ubicación');
+                } finally {
+                    loadingOverlay.style.display = 'none';
+                }
+            });
+
+            // Función para renderizar lista de lugares
+            function renderPlacesList(places) {
+                if (!places.length) {
+                    placesList.innerHTML = '<div class="no-results">No se encontraron lugares cercanos</div>';
+                    return;
+                }
+
+                placesList.innerHTML = places.map(place => `
+                    <div class="place-item" data-id="${place.id}">
+                        <div class="place-info">
+                            <span class="place-name">${place.name}</span>
+                            <span class="place-distance">${place.distance}</span>
+                        </div>
+                        <div class="place-rating">⭐ ${place.rating}</div>
+                    </div>
+                `).join('');
+            }
+
+            // Función para mostrar errores
+            function showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                placesList.innerHTML = '';
+                placesList.appendChild(errorDiv);
+            }
+
+            // Ajustar altura del mapa según el dispositivo
+            const mapContainer = document.querySelector('.map-container');
+            if (mapContainer) {
+                const viewportHeight = window.innerHeight;
+                mapContainer.style.height = width >= 768 ? '60vh' : '40vh';
+            }
+
+            window.addEventListener('resize', handleResize);
+            handleResize();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes - Perfil</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="header responsive-header">
+            <a href="index.html" class="back-button">
+                <span class="icon">←</span>
+            </a>
+            <h1 class="responsive-title">Mi Perfil</h1>
+            <button class="edit-profile-btn" id="editProfileBtn" onclick="window.location.href='settings.html'">
+                <span class="icon">⚙️</span>
+            </button>
+        </div>
+
+        <div class="content responsive-content">
+            <!-- Sección de perfil de usuario mejorada -->
+            <div class="user-profile-section">
+                <div class="user-profile-header">
+                    <div class="user-avatar-large">
+                        <img src="/api/placeholder/120/120" alt="Profile" id="userAvatar">
+                    </div>
+                    <div class="user-details">
+                        <h2 class="user-name-large" id="userName">Cargando...</h2>
+                        <p class="user-bio" id="userBio">Cargando biografía...</p>
+                    </div>
+                </div>
+
+                <div class="user-stats">
+                    <div class="user-stat-item">
+                        <div class="stat-number" id="visitCount">0</div>
+                        <div class="stat-label">Visitas</div>
+                    </div>
+                    <div class="user-stat-item">
+                        <div class="stat-number" id="reviewCount">0</div>
+                        <div class="stat-label">Reseñas</div>
+                    </div>
+                    <div class="user-stat-item">
+                        <div class="stat-number" id="placeCount">0</div>
+                        <div class="stat-label">Lugares</div>
+                    </div>
+                    <div class="user-stat-item">
+                        <div class="stat-number" id="badgeCount">0</div>
+                        <div class="stat-label">Insignias</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resto del contenido existente... -->
+            <div class="profile-sections">
+                <!-- Categorías Favoritas -->
+                <div class="profile-section">
+                    <h3>Categorías Favoritas</h3>
+                    <div class="categories-grid" id="favoriteCategories">
+                        <div class="loading-indicator">Cargando categorías...</div>
+                    </div>
+                </div>
+
+                <!-- Lugares Agregados -->
+                <div class="profile-section">
+                    <h3>Mis Lugares</h3>
+                    <div class="places-grid" id="userPlaces">
+                        <div class="loading-indicator">Cargando lugares...</div>
+                    </div>
+                </div>
+
+                <!-- Actividad Reciente -->
+                <div class="profile-section">
+                    <h3>Actividad Reciente</h3>
+                    <div class="activity-timeline" id="recentActivity">
+                        <div class="loading-indicator">Cargando actividad...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/profile.js"></script>
+</body>
+</html>

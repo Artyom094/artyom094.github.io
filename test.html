@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes</title>
+    <link rel="stylesheet" href="STYLE/test.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabecera común -->
+        <div class="header responsive-header">
+            <div class="avatar">
+                <img src="/img/img.jpg" alt="Avatar">
+            </div>
+            <h1>USUARIO_NAME</h1>
+        </div>
+        
+        <!-- Pantalla de Inicio -->
+        <div id="home-screen" class="screen active">
+            <div class="main-menu responsive-grid">
+                <a href="#" class="menu-item responsive-item" onclick="showScreen('restaurants-screen')">
+                    <div class="menu-icon responsive-icon">🍽️</div>
+                    <span class="menu-text">Restaurantes</span>
+                </a>
+                <a href="#" class="menu-item responsive-item" onclick="showScreen('clubs-screen')">
+                    <div class="menu-icon responsive-icon">🎵</div>
+                    <span class="menu-text">Antros</span>
+                </a>
+                <a href="#" class="menu-item responsive-item" onclick="showScreen('bars-screen')">
+                    <div class="menu-icon responsive-icon">🍸</div>
+                    <span class="menu-text">Bares</span>
+                </a>
+                <a href="#" class="menu-item responsive-item" onclick="showScreen('cafes-screen')">
+                    <div class="menu-icon responsive-icon">☕</div>
+                    <span class="menu-text">Cafeterías</span>
+                </a>
+                <a href="#" class="menu-item responsive-item" onclick="showScreen('recreation-screen')">
+                    <div class="menu-icon responsive-icon">🎮</div>
+                    <span class="menu-text">Centros de recreación</span>
+                </a>
+                <a href="#" class="menu-item responsive-item">
+                    <div class="menu-icon responsive-icon">🏠</div>
+                    <span class="menu-text">Home</span>
+                </a>
+            </div>
+            
+            <div class="bottom-nav responsive-nav">
+                <a href="#" class="nav-item active" onclick="showScreen('home-screen')">
+                    <div>🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('map-screen')">
+                    <div>🗺️</div>
+                    <span>Mapa</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('reviews-screen')">
+                    <div>⭐</div>
+                    <span>Reseñas</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('badges-screen')">
+                    <div>🏅</div>
+                    <span>Insignias</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Restaurantes -->
+        <div id="restaurants-screen" class="screen">
+            <div class="content responsive-content">
+                <h2 class="responsive-title">Restaurantes</h2>
+                <ul class="place-list responsive-list">
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                </ul>
+            </div>
+            
+            <div class="bottom-nav responsive-nav">
+                <a href="#" class="nav-item" onclick="showScreen('home-screen')">
+                    <div>🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('map-screen')">
+                    <div>🗺️</div>
+                    <span>Mapa</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('reviews-screen')">
+                    <div>⭐</div>
+                    <span>Reseñas</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('badges-screen')">
+                    <div>🏅</div>
+                    <span>Insignias</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Detalle de Restaurante -->
+        <div id="restaurant-detail-screen" class="screen">
+            <div class="content">
+                <div class="place-detail responsive-detail">
+                    <div class="detail-header">
+                        <h2>NOMBRE DEL RESTAURANTE</h2>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="section-title">UBICACIÓN</div>
+                        <p>Dirección del lugar</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="section-title">HORARIO</div>
+                        <p>Lunes - Viernes: 9:00 - 22:00</p>
+                        <p>Sábado - Domingo: 10:00 - 23:00</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="section-title">RESEÑAS</div>
+                        <p>Reseñas de usuarios...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bottom-nav responsive-nav">
+                <a href="#" class="nav-item" onclick="showScreen('home-screen')">
+                    <div>🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('map-screen')">
+                    <div>🗺️</div>
+                    <span>Mapa</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('reviews-screen')">
+                    <div>⭐</div>
+                    <span>Reseñas</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('badges-screen')">
+                    <div>🏅</div>
+                    <span>Insignias</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Mapa -->
+        <div id="map-screen" class="screen">
+            <div class="content">
+                <div class="map-container">
+                    MAPA INTERACTIVO
+                </div>
+                
+                <ul class="place-list">
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                </ul>
+            </div>
+            
+            <div class="bottom-nav responsive-nav">
+                <a href="#" class="nav-item" onclick="showScreen('home-screen')">
+                    <div>🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item active" onclick="showScreen('map-screen')">
+                    <div>🗺️</div>
+                    <span>Mapa</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('reviews-screen')">
+                    <div>⭐</div>
+                    <span>Reseñas</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('badges-screen')">
+                    <div>🏅</div>
+                    <span>Insignias</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Reseñas -->
+        <div id="reviews-screen" class="screen">
+            <div class="category-tabs responsive-tabs">
+                <div class="category-tab active">Restaurantes</div>
+                <div class="category-tab">Antros</div>
+                <div class="category-tab">Cafeterías</div>
+                <div class="category-tab">Bares</div>
+                <div class="category-tab">Centros de recreación</div>
+            </div>
+            
+            <div class="content">
+                <ul class="place-list">
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                    <li class="place-item" onclick="showScreen('restaurant-detail-screen')">NOMBRE DEL RESTAURANTE</li>
+                </ul>
+            </div>
+            
+            <div class="bottom-nav responsive-nav">
+                <a href="#" class="nav-item" onclick="showScreen('home-screen')">
+                    <div>🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('map-screen')">
+                    <div>🗺️</div>
+                    <span>Mapa</span>
+                </a>
+                <a href="#" class="nav-item active" onclick="showScreen('reviews-screen')">
+                    <div>⭐</div>
+                    <span>Reseñas</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('badges-screen')">
+                    <div>🏅</div>
+                    <span>Insignias</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Insignias -->
+        <div id="badges-screen" class="screen">
+            <div class="content">
+                <h2>Insignias</h2>
+                
+                <div class="badges-container">
+                    <div class="badge unlocked">
+                        <div>🏅</div>
+                        <span>Básico</span>
+                    </div>
+                    <div class="badge unlocked">
+                        <div>🏅</div>
+                        <span>Nivel 5</span>
+                    </div>
+                    <div class="badge unlocked">
+                        <div>🏅</div>
+                        <span>Nivel 10</span>
+                    </div>
+                    <div class="badge">
+                        <div>🏅</div>
+                        <span>Nivel 15</span>
+                    </div>
+                    <div class="badge">
+                        <div>🏅</div>
+                        <span>Nivel 20</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bottom-nav responsive-nav">
+                <a href="#" class="nav-item" onclick="showScreen('home-screen')">
+                    <div>🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('map-screen')">
+                    <div>🗺️</div>
+                    <span>Mapa</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('reviews-screen')">
+                    <div>⭐</div>
+                    <span>Reseñas</span>
+                </a>
+                <a href="#" class="nav-item active" onclick="showScreen('badges-screen')">
+                    <div>🏅</div>
+                    <span>Insignias</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Perfil -->
+        <div id="profile-screen" class="screen">
+            <div class="content">
+                <div class="profile-section">
+                    <h2>USUARIO_NAME</h2>
+                </div>
+                
+                <div class="profile-section">
+                    <div class="profile-item">
+                        <div class="profile-label">Correo:</div>
+                        <div class="profile-value">usuario@example.com</div>
+                    </div>
+                    
+                    <div class="profile-item">
+                        <div class="profile-label">Edad:</div>
+                        <div class="profile-value">25</div>
+                    </div>
+                    
+                    <div class="profile-item">
+                        <div class="profile-label">Teléfono:</div>
+                        <div class="profile-value">+52 123 456 7890</div>
+                    </div>
+                </div>
+                
+                <button class="logout-btn">Cerrar Sesión</button>
+            </div>
+            
+            <div class="bottom-nav responsive-nav">
+                <a href="#" class="nav-item" onclick="showScreen('home-screen')">
+                    <div>🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('map-screen')">
+                    <div>🗺️</div>
+                    <span>Mapa</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('reviews-screen')">
+                    <div>⭐</div>
+                    <span>Reseñas</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showScreen('badges-screen')">
+                    <div>🏅</div>
+                    <span>Insignias</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para cambiar entre pantallas
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar la pantalla seleccionada
+            document.getElementById(screenId).classList.add('active');
+            
+            // Actualizar navegación inferior
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Destacar el ítem de navegación correspondiente
+            const currentScreen = screenId.split('-')[0];
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.querySelector('span').textContent.toLowerCase() === currentScreen) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        // Agregar funcionalidad al avatar para mostrar perfil
+        const avatars = document.querySelectorAll('.avatar');
+        avatars.forEach(avatar => {
+            avatar.addEventListener('click', () => {
+                showScreen('profile-screen');
+            });
+        });
+        
+        // Funcionalidad para las pestañas de categorías
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Add responsive handling
+        function handleResize() {
+            const width = window.innerWidth;
+            const container = document.querySelector('.app-container');
+            
+            if (width >= 1280) {
+                container.classList.add('large-desktop');
+                container.classList.remove('desktop', 'tablet', 'mobile');
+            } else if (width >= 1024) {
+                container.classList.add('desktop');
+                container.classList.remove('large-desktop', 'tablet', 'mobile');
+            } else if (width >= 768) {
+                container.classList.add('tablet');
+                container.classList.remove('large-desktop', 'desktop', 'mobile');
+            } else {
+                container.classList.add('mobile');
+                container.classList.remove('large-desktop', 'desktop', 'tablet');
+            }
+        }
+
+        // Listen for resize events
+        window.addEventListener('resize', handleResize);
+        // Initial call
+        handleResize();
+    </script>
+</body>
+</html>

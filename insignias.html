@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes - Insignias</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabecera -->
+        <div class="header responsive-header">
+            <a href="profile.html" class="avatar responsive-avatar">
+                <img src="/api/placeholder/40/40" alt="Avatar">
+            </a>
+            <h1 class="responsive-title">USUARIO_NAME</h1>
+        </div>
+        
+        <!-- Contenido de insignias -->
+        <div class="content responsive-content">
+            <h2 class="page-title responsive-title">Insignias</h2>
+            
+            <div class="level-info responsive-card">
+                <div class="level-title">Nivel básico</div>
+                <p>Continúa escribiendo reseñas para subir de nivel y desbloquear más insignias.</p>
+            </div>
+            
+            <div class="badges-container responsive-grid">
+                <div class="badge unlocked responsive-badge">
+                    <div class="badge-icon">🏅</div>
+                    <span class="badge-name">Básico</span>
+                </div>
+                <div class="badge unlocked responsive-badge">
+                    <div class="badge-icon">🏅</div>
+                    <span class="badge-name">Nivel 5</span>
+                </div>
+                <div class="badge unlocked responsive-badge">
+                    <div class="badge-icon">🏅</div>
+                    <span class="badge-name">Nivel 10</span>
+                </div>
+                <div class="badge responsive-badge">
+                    <div class="badge-icon">🔒</div>
+                    <span class="badge-name">Nivel 15</span>
+                </div>
+                <div class="badge responsive-badge">
+                    <div class="badge-icon">🔒</div>
+                    <span class="badge-name">Nivel 25</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav responsive-nav">
+            <a href="index.html" class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="mapa.html" class="nav-item">
+                <div class="nav-icon">🗺️</div>
+                <span class="nav-text">Mapa</span>
+            </a>
+            <a href="resenas.html" class="nav-item">
+                <div class="nav-icon">⭐</div>
+                <span class="nav-text">Reseñas</span>
+            </a>
+            <a href="insignias.html" class="nav-item active">
+                <div class="nav-icon">🏅</div>
+                <span class="nav-text">Insignias</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Script para manejar responsividad -->
+    <script>
+        function handleResize() {
+            const width = window.innerWidth;
+            document.body.classList.remove('mobile', 'tablet', 'desktop');
+            
+            if (width >= 1024) {
+                document.body.classList.add('desktop');
+            } else if (width >= 768) {
+                document.body.classList.add('tablet');
+            } else {
+                document.body.classList.add('mobile');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    </script>
+</body>
+</html>
