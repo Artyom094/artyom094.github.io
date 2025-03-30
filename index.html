@@ -60,10 +60,6 @@
                 <div class="menu-icon">☕</div>
                 <span class="menu-text">Cafeterías</span>
             </a>
-            <a href="#" class="menu-item" data-category="recreation">
-                <div class="menu-icon">🎮</div>
-                <span class="menu-text">Centros de recreación</span>
-            </a>
             <a href="#" class="menu-item" data-category="all">
                 <div class="menu-icon">🏠</div>
                 <span class="menu-text">Todos</span>
@@ -191,7 +187,82 @@
         <span class="icon">➕</span>
     </button>
     <script src="js/sessionCheck.js"></script>
+    <script>
+        // ...existing code...
 
+// Modal functionality for adding new places
+const addPlaceBtn = document.getElementById('addPlaceBtn');
+const addPlaceModal = document.getElementById('addPlaceModal');
+const cancelAddPlaceBtn = document.getElementById('cancelAddPlace');
+const addPlaceForm = document.getElementById('addPlaceForm');
+const placeCategorySelect = document.getElementById('placeCategory');
+
+// Populate categories in the select element
+const categories = [
+    { id: 'restaurants', name: 'Restaurantes' },
+    { id: 'clubs', name: 'Antros' },
+    { id: 'bars', name: 'Bares' },
+    { id: 'cafes', name: 'Cafeterías' }
+];
+
+// Fill categories in select
+categories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category.id;
+    option.textContent = category.name;
+    placeCategorySelect.appendChild(option);
+});
+
+// Show modal when clicking the add button
+addPlaceBtn.addEventListener('click', () => {
+    addPlaceModal.style.display = 'block';
+});
+
+// Hide modal when clicking cancel
+cancelAddPlaceBtn.addEventListener('click', () => {
+    addPlaceModal.style.display = 'none';
+    addPlaceForm.reset();
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', (e) => {
+    if (e.target === addPlaceModal) {
+        addPlaceModal.style.display = 'none';
+        addPlaceForm.reset();
+    }
+});
+
+// Handle form submission
+addPlaceForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(addPlaceForm);
+    const placeData = {
+        name: formData.get('name'),
+        category: formData.get('category'),
+        address: formData.get('address'),
+        description: formData.get('description'),
+        features: formData.getAll('features')
+    };
+
+    try {
+        // Here you would typically send the data to your backend
+        // For now, we'll just log it and close the modal
+        console.log('Place data:', placeData);
+        
+        // Clear form and close modal
+        addPlaceForm.reset();
+        addPlaceModal.style.display = 'none';
+        
+        // Show success message (you can customize this)
+        alert('Lugar agregado exitosamente!');
+        
+    } catch (error) {
+        console.error('Error adding place:', error);
+        alert('Error al agregar el lugar. Por favor intenta de nuevo.');
+    }
+});
+    </script>
     <script src="js/indexjs.js"></script>
 </body>
 </html>

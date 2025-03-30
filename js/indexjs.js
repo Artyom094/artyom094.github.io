@@ -246,3 +246,6 @@ moreCategoriesBtn.addEventListener('click', () => {
 closeCategoriesBtn.addEventListener('click', () => {
     categoriesModal.style.display = 'none';
 });
+
+
+
