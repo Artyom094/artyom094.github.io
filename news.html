@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes - Últimos Lugares</title>
+    <link rel="stylesheet" href="style/styles.css">
+    <style>
+        .place-item {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+        
+        .place-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .place-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        
+        .place-details {
+            padding: 15px;
+        }
+        
+        .place-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .place-address {
+            font-size: 0.9em;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .place-date {
+            font-size: 0.8em;
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .place-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .place-category {
+            background-color: var(--gray-light);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        
+        .place-price {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .section-title {
+            margin: 20px 0;
+            font-size: 1.3em;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+        
+        .loading-indicator {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+        }
+        
+        .error-message {
+            padding: 15px;
+            background-color: #ffebee;
+            color: #c62828;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabecera -->
+        <div class="header responsive-header">
+            <a href="profile.html" class="avatar responsive-avatar">
+                <img src="/api/placeholder/40/40" alt="Avatar" id="userAvatar">
+            </a>
+            <h1 class="responsive-title">City Vibes</h1>
+        </div>
+        
+        <!-- Contenido principal -->
+        <div class="content responsive-content">
+            <h2 class="section-title">
+                <span class="icon">🕒</span> Lugares recién agregados
+            </h2>
+            
+            <div id="recentPlaces" class="place-list responsive-list">
+                <!-- Aquí se cargarán los lugares recientes -->
+                <div class="loading-indicator">Cargando últimos lugares...</div>
+            </div>
+        </div>
+        
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav responsive-nav">
+            <a href="index.html" class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="mapa.html" class="nav-item">
+                <div class="nav-icon">🗺️</div>
+                <span class="nav-text">Mapa</span>
+            </a>
+            <a href="news.html" class="nav-item active">
+                <div class="nav-icon">🕛</div>
+                <span class="nav-text">Ultimos</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos DOM
+            const recentPlaces = document.getElementById('recentPlaces');
+            
+            // URL de la API
+            const API_URL = 'https://cityvibesplaces.d1.mockoon.app/api/places';
+            
+            // Cargar lugares recientes
+            loadRecentPlaces();
+            
+            /**
+             * Carga los lugares más recientes
+             */
+            async function loadRecentPlaces() {
+                try {
+                    // Obtener todos los lugares
+                    const response = await fetch(API_URL, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        mode: 'cors'
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Error HTTP: ${response.status}`);
+                    }
+                    
+                    const places = await response.json();
+                    
+                    // Ordenar lugares por fecha (del más reciente al más antiguo)
+                    const sortedPlaces = sortPlacesByDate(places);
+                    
+                    // Mostrar los lugares ordenados
+                    displayRecentPlaces(sortedPlaces);
+                    
+                } catch (error) {
+                    console.error('Error al cargar lugares recientes:', error);
+                    showError('No se pudieron cargar los lugares recientes. Intenta de nuevo más tarde.');
+                }
+            }
+            
+            /**
+             * Ordena los lugares por fecha de agregado (más reciente primero)
+             * @param {Array} places - Lista de lugares
+             * @returns {Array} - Lista ordenada por fecha (más reciente primero)
+             */
+            function sortPlacesByDate(places) {
+                return [...places].sort((a, b) => {
+                    // Asegurarse de que Added_Timestamp existe
+                    const dateA = a.Added_Timestamp ? new Date(a.Added_Timestamp) : new Date(0);
+                    const dateB = b.Added_Timestamp ? new Date(b.Added_Timestamp) : new Date(0);
+                    
+                    // Ordenar de más reciente a más antiguo
+                    return dateB - dateA;
+                });
+            }
+            
+            /**
+             * Muestra los lugares ordenados por fecha
+             * @param {Array} places - Lista de lugares ordenados
+             */
+            function displayRecentPlaces(places) {
+                if (!recentPlaces) return;
+                
+                // Si no hay lugares
+                if (places.length === 0) {
+                    recentPlaces.innerHTML = `
+                        <div class="no-results">
+                            No hay lugares disponibles todavía.
+                        </div>
+                    `;
+                    return;
+                }
+                
+                recentPlaces.innerHTML = '';
+                
+                // Crear elemento para cada lugar
+                places.forEach(place => {
+                    const placeElement = document.createElement('div');
+                    placeElement.className = 'place-item';
+                    placeElement.dataset.id = place.Id_Place || '';
+                    
+                    // Verificar y asignar valores por defecto para evitar "undefined"
+                    const name = place.Name || 'Nombre no disponible';
+                    const category = place.Category || 'Categoría no disponible';
+                    const address = place.Address || 'Dirección no disponible';
+                    const days = place.Days || 'Días no especificados';
+                    const hours = place.Hours || 'Horario no disponible';
+                    const priceRange = place.Price_Range || 'Precio no disponible';
+                    const imageUrl = place.Image_URL || '/api/placeholder/400/180';
+                    const addedDate = place.Added_Timestamp || '';
+                    
+                    placeElement.innerHTML = `
+                        <img src="${imageUrl}" alt="${name}" class="place-image">
+                        <div class="place-details">
+                            ${addedDate ? `<div class="place-date">Agregado el ${formatDate(addedDate)}</div>` : ''}
+                            <h3 class="place-title">${name}</h3>
+                            <p class="place-address">${address}</p>
+                            <div class="place-hours">${days} · ${hours}</div>
+                            <div class="place-meta">
+                                <span class="place-category">${category}</span>
+                                <span class="place-price">${priceRange}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Evento para ir a la página de detalles al hacer clic
+                    placeElement.addEventListener('click', function() {
+                        window.location.href = `lugar.html?id=${place.Id_Place}`;
+                    });
+                    
+                    recentPlaces.appendChild(placeElement);
+                });
+            }
+            
+            /**
+             * Formatea una fecha ISO a un formato legible
+             * @param {string} dateString - Fecha en formato ISO
+             * @returns {string} - Fecha formateada
+             */
+            function formatDate(dateString) {
+                if (!dateString) return '';
+                
+                try {
+                    const date = new Date(dateString);
+                    
+                    // Verificar si es una fecha válida
+                    if (isNaN(date.getTime())) {
+                        return dateString;
+                    }
+                    
+                    // Formatear la fecha
+                    return date.toLocaleDateString('es-ES', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+                } catch (error) {
+                    console.error('Error al formatear fecha:', error);
+                    return dateString;
+                }
+            }
+            
+            /**
+             * Muestra un mensaje de error
+             * @param {string} message - Mensaje de error
+             */
+            function showError(message) {
+                if (!recentPlaces) return;
+                
+                recentPlaces.innerHTML = `
+                    <div class="error-message">
+                        ${message}
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
