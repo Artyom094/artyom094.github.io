@@ -5,109 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CityVibes - Detalle de Lugar</title>
     <link rel="stylesheet" href="style/styles.css">
-    <style>
-        .place-container {
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .place-header {
-            margin-bottom: 20px;
-        }
-        
-        .place-title {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        
-        .place-category {
-            display: inline-block;
-            background-color: var(--gray-light);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.9em;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-        
-        .place-details {
-            margin-bottom: 20px;
-        }
-        
-        .detail-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-        
-        .detail-icon {
-            margin-right: 10px;
-            font-size: 1.2em;
-            color: var(--primary-color);
-            min-width: 24px;
-        }
-        
-        .detail-text {
-            flex: 1;
-        }
-        
-        .map-section {
-            margin-bottom: 20px;
-        }
-        
-        .map-container {
-            height: 250px;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .view-on-map {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 8px 15px;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            margin-top: 10px;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-        
-        .view-on-map:hover {
-            background-color: #3872c0;
-        }
-        
-        .loading-indicator {
-            text-align: center;
-            padding: 40px;
-            color: var(--gray);
-        }
-        
-        .error-message {
-            padding: 15px;
-            background-color: #ffebee;
-            color: #c62828;
-            border-radius: var(--border-radius);
-            margin: 20px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="style/place.css">
+    <script src="js/places-service.js" defer></script>
 </head>
 <body>
     <div class="app-container">
         <!-- Cabecera -->
         <div class="header responsive-header">
             <a href="javascript:history.back()" class="back-button">
-                <span class="icon">←</span>
+                <span class="icon">&larr;</span>
             </a>
             <h1 class="responsive-title" id="placeNameHeader">Cargando...</h1>
         </div>
@@ -115,7 +21,6 @@
         <!-- Contenido principal -->
         <div class="content responsive-content">
             <div id="placeContent">
-                <!-- Aquí se cargará la información del lugar -->
                 <div class="loading-indicator">Cargando información del lugar...</div>
             </div>
         </div>
@@ -135,187 +40,21 @@
                 <span class="nav-text">Reseñas</span>
             </a>
         </nav>
-    </div>
+        <div id="reviewsContainer"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Obtener ID del lugar de la URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const placeId = urlParams.get('id');
-            
-            // Elementos DOM
-            const placeNameHeader = document.getElementById('placeNameHeader');
-            const placeContent = document.getElementById('placeContent');
-            
-            // URL de la API
-            const API_URL = 'https://cityvibesplaces.d1.mockoon.app/api/places';
-            
-            // Verificar si hay ID de lugar
-            if (!placeId) {
-                showError('No se especificó un lugar para mostrar');
-                return;
-            }
-            
-            // Cargar lugar por ID
-            loadPlaceById(placeId);
-            
-            /**
-             * Carga un lugar específico por su ID
-             * @param {string|number} id - ID del lugar a cargar
-             */
-            async function loadPlaceById(id) {
-                try {
-                    // 1. Primero intentamos obtener todos los lugares
-                    const response = await fetch(API_URL, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        mode: 'cors'
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`Error HTTP: ${response.status}`);
-                    }
-                    
-                    const allPlaces = await response.json();
-                    console.log('Todos los lugares:', allPlaces);
-                    
-                    // 2. Encontrar el lugar por ID
-                    const place = allPlaces.find(p => String(p.Id_Place) === String(id));
-                    
-                    if (!place) {
-                        throw new Error('No se encontró el lugar especificado');
-                    }
-                    
-                    console.log('Lugar encontrado:', place);
-                    
-                    // 3. Mostrar detalles del lugar
-                    displayPlaceDetails(place);
-                    
-                } catch (error) {
-                    console.error('Error al cargar información del lugar:', error);
-                    showError('No se pudo cargar la información del lugar');
-                }
-            }
-            
-            /**
-             * Muestra los detalles del lugar en la página
-             * @param {Object} place - Datos del lugar
-             */
-            function displayPlaceDetails(place) {
-                // Para evitar "undefined", verificamos cada propiedad
-                const name = place.Name || 'Nombre no disponible';
-                const category = place.Category || 'Categoría no disponible';
-                const address = place.Address || 'Dirección no disponible';
-                const days = place.Days || 'Días no especificados';
-                const hours = place.Hours || 'Horario no disponible';
-                const priceRange = place.Price_Range || 'Precio no disponible';
-                const addedDate = place.Added_Timestamp || '';
-                const latitude = place.Latitude || 0;
-                const longitude = place.Longitude || 0;
-                const mapsUrl = place.Maps_URL || '';
-                
-                // Actualizar título
-                document.title = `CityVibes - ${name}`;
-                placeNameHeader.textContent = name;
-                
-                // Generar contenido HTML seguro (evitando undefined)
-                const placeHTML = `
-                    <div class="place-container">
-                        <div class="place-header">
-                            <h2 class="place-title">${name}</h2>
-                            <div class="place-category">${category}</div>
-                        </div>
-                        
-                        <div class="place-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">📍</span>
-                                <span class="detail-text">${address}</span>
-                            </div>
-                            
-                            <div class="detail-item">
-                                <span class="detail-icon">🕒</span>
-                                <span class="detail-text">${days} · ${hours}</span>
-                            </div>
-                            
-                            <div class="detail-item">
-                                <span class="detail-icon">💵</span>
-                                <span class="detail-text">${priceRange}</span>
-                            </div>
-                            
-                            ${addedDate ? `
-                            <div class="detail-item">
-                                <span class="detail-icon">📅</span>
-                                <span class="detail-text">Agregado: ${formatDate(addedDate)}</span>
-                            </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                    
-                    ${latitude && longitude ? `
-                    <div class="map-section place-container">
-                        <h3>Ubicación</h3>
-                        <div class="map-container">
-                            <iframe 
-                                src="https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed" 
-                                allowfullscreen>
-                            </iframe>
-                        </div>
-                        ${mapsUrl ? 
-                            `<a href="${mapsUrl}" target="_blank" class="view-on-map">Ver en Google Maps</a>` : 
-                            `<a href="https://www.google.com/maps?q=${latitude},${longitude}" target="_blank" class="view-on-map">Ver en Google Maps</a>`
-                        }
-                    </div>
-                    ` : ''}
-                `;
-                
-                // Actualizar el contenido
-                placeContent.innerHTML = placeHTML;
-            }
-            
-            /**
-             * Formatea una fecha ISO a un formato legible
-             * @param {string} dateString - Fecha en formato ISO
-             * @returns {string} - Fecha formateada
-             */
-            function formatDate(dateString) {
-                if (!dateString) return 'Fecha no disponible';
-                
-                try {
-                    const date = new Date(dateString);
-                    
-                    // Verificar si es una fecha válida
-                    if (isNaN(date.getTime())) {
-                        return dateString;
-                    }
-                    
-                    // Formatear la fecha
-                    return date.toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                } catch (error) {
-                    console.error('Error al formatear fecha:', error);
-                    return dateString;
-                }
-            }
-            
-            /**
-             * Muestra un mensaje de error
-             * @param {string} message - Mensaje de error
-             */
-            function showError(message) {
-                placeContent.innerHTML = `
-                    <div class="error-message">
-                        <p>${message}</p>
-                        <p>Vuelve a la página principal para ver otros lugares.</p>
-                    </div>
-                `;
-            }
-        });
-    </script>
+<!-- Formulario para agregar reseña -->
+<form id="reviewForm">
+    <label for="rating">Calificación (1-5):</label>
+    <input type="number" id="rating" min="1" max="5" required />
+    
+    <label for="comment">Comentario:</label>
+    <textarea id="comment" required></textarea>
+    
+    <button type="submit" id="submitReview">Publicar Reseña</button>
+</form>
+
+<script src="js/reviews.js"></script>
+
+    </div>
 </body>
 </html>

@@ -5,149 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CityVibes - Inicio</title>
     <link rel="stylesheet" href="style/styles.css">
-    <style>
-        .place-item {
-            display: flex;
-            flex-direction: column;
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-        
-        .place-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .place-image {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-        }
-        
-        .place-details {
-            padding: 15px;
-        }
-        
-        .place-title {
-            font-size: 1.1em;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .place-address {
-            font-size: 0.9em;
-            color: var(--gray);
-            margin-bottom: 10px;
-        }
-        
-        .place-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-        
-        .place-category {
-            background-color: var(--gray-light);
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }
-        
-        .place-price {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-        
-        .section-title {
-            margin: 20px 0;
-            font-size: 1.3em;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .section-title .icon {
-            font-size: 1.2em;
-        }
-        
-        .view-on-maps {
-            margin-top: 10px;
-            display: inline-block;
-            padding: 8px 12px;
-            background-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: var(--border-radius);
-            font-size: 0.9em;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-        
-        .view-on-maps:hover {
-            background-color: #3872c0;
-        }
-        
-        /* Estilo para debug */
-        #debugInfo {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            font-size: 0.8em;
-            color: #555;
-            white-space: pre-wrap;
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="style/index.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- Cabecera -->
         <div class="header responsive-header">
             <a href="profile.html" class="avatar responsive-avatar">
                 <img src="/api/placeholder/40/40" alt="Avatar" id="userAvatar">
             </a>
             <h1 class="responsive-title">City Vibes</h1>
         </div>
-
-        <!-- Menú principal con accesos directos -->
-       
-
-        <!-- Contenedor para categoría activa y resultados -->
         <div class="content responsive-content">
-            <!-- Indicador de categoría activa -->
-            <div id="activeCategory" class="active-category" style="display: none;">
-                <span class="category-label" id="categoryLabel"></span>
-                <button class="clear-category" id="clearCategoryBtn">✕</button>
-            </div>
-
-            <!-- Título de la sección destacada -->
             <h2 class="section-title">
                 <span class="icon">🔥</span> Lo popular de la semana
             </h2>
-
             <div id="categoryResults" class="place-list responsive-list">
-                <!-- Contenido inicial -->
                 <div class="initial-message" id="initialMessage">
                     Cargando lugares populares...
                 </div>
-                <!-- Indicador de carga -->
                 <div class="loading-indicator" id="loadingIndicator" style="display: none;">
                     Cargando...
                 </div>
             </div>
-            
-            <!-- Información de depuración (oculta por defecto) -->
-            <div id="debugInfo"></div>
         </div>
-        
-        <!-- Navegación inferior -->
         <nav class="bottom-nav responsive-nav">
             <a href="index.html" class="nav-item active">
                 <div class="nav-icon">🏠</div>
@@ -159,10 +39,10 @@
             </a>
             <a href="news.html" class="nav-item">
                 <div class="nav-icon">🕛</div>
-                <span class="nav-text">Ultimos</span>
+                <span class="nav-text">Últimos</span>
             </a>
         </nav>
     </div>
-    <script src="js/places-service.js"></script>
+    <script src="js/place.js"></script>
 </body>
 </html>

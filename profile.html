@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CityVibes - Perfil</title>
-    <link rel="stylesheet" href="style/styles.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>CityVibes - Perfil</title>
+        <link rel="stylesheet" href="style/styles.css">
+        <link rel="stylesheet" href="style/profile.css">
+    </head>
+    <body>
     <div class="app-container">
         <div class="header responsive-header">
             <a href="index.html" class="back-button">
                 <span class="icon">←</span>
             </a>
             <h1 class="responsive-title">Mi Perfil</h1>
+            <a href="settings.html" class="edit-profile-btn">
+                <span class="icon">⚙️</span>
+            </a>
         </div>
 
         <div class="content responsive-content">
-            <!-- Sección de perfil de usuario mejorada -->
             <div class="user-profile-section">
                 <div class="user-profile-header">
                     <div class="user-avatar-large" id="userAvatarContainer">
@@ -24,30 +27,15 @@
                         <input type="file" id="avatarInput" style="display: none;" accept="image/*">
                     </div>
                     <div class="user-details">
-                        <h2 class="user-name-large" id="userName" contenteditable="true">Cargando...</h2>
+                        <h2 class="user-name-large" id="userName">Cargando...</h2>
                     </div>
                 </div>
-
-                <div class="settings-sections">
-                    <!-- Información Personal -->
-                    <div class="settings-section">
-                        <div class="settings-section danger-zone">
-                            <div class="danger-actions">
-
-                        <button type="button" class="warning-btn" id="logoutBtn">
-                            Cerrar sesión
-                        </button>
-                        </div></div>
-                    </div>
+            </div>
         </div>
     </div>
 
-    <!-- Incluir script para edición del perfil -->
-<script src="js/profileEdit.js"></script>
-<script src="js/sessionCheck.js"></script>
-
-<script src="js/logout.js"></script>
-
+    <!-- Incluir scripts -->
     <script src="js/profile.js"></script>
+    <script src="js/sessionCheck.js"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CityVibes - Configuración</title>
     <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="style/settings.css">
 </head>
 <body>
     <div class="app-container">
@@ -13,397 +14,119 @@
                 <span class="icon">←</span>
             </a>
             <h1 class="responsive-title">Configuración</h1>
-            <button class="save-settings-btn" id="saveSettingsBtn" style="display: none;">
-                <span class="icon">💾</span>
-            </button>
         </div>
 
         <div class="content responsive-content">
+            <div class="user-info">
+                <h3>Información de Usuario</h3>
+                <p><strong>Nombre de Usuario:</strong> <span id="userUsername">Cargando...</span></p>
+                <p><strong>Correo Electrónico:</strong> <span id="userEmail">Cargando...</span></p>
+            </div>
+
             <div class="settings-sections">
-                <!-- Avatar y Foto -->
+                <!-- Información Personal -->
                 <div class="settings-section">
-                    <h3>Foto de Perfil</h3>
-                    <div class="profile-avatar-container">
-                        <div class="profile-avatar" id="profileAvatar">
-                            <img src="/api/placeholder/120/120" alt="Profile">
-                            <div class="avatar-overlay">
-                                <span class="change-avatar-text">Cambiar foto</span>
-                            </div>
+                    <h3>Información Personal</h3>
+                    <form id="personalInfoForm" class="settings-form">
+                        <div class="form-group">
+                            <label for="settingsUsername">Nombre de Usuario</label>
+                            <input 
+                                type="text" 
+                                id="settingsUsername" 
+                                name="username" 
+                                required
+                                pattern="[a-zA-Z0-9_]{3,15}"
+                                title="3-15 caracteres, solo letras, números y guiones bajos"
+                            >
                         </div>
-                    </div>
+
+                        <div class="form-group">
+                            <label for="settingsEmail">Correo Electrónico</label>
+                            <input 
+                                type="email" 
+                                id="settingsEmail" 
+                                name="email"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="settings-button">Guardar Cambios</button>
+                        </div>
+                    </form>
                 </div>
 
-                <!-- Secciones de configuración -->
-                <div class="settings-sections">
-                    <!-- Información Personal -->
-                    <div class="settings-section">
-                        <h3>Información Personal</h3>
-                        <form id="personalInfoForm" class="settings-form">
-                            <div class="input-group">
-                                <input type="text" id="fullName" name="fullName" required placeholder=" ">
-                                <label for="fullName" class="input-label">Nombre completo</label>
+                <!-- Cambio de Contraseña -->
+                <div class="settings-section">
+                    <h3>Cambiar Contraseña</h3>
+                    <form id="passwordChangeForm" class="settings-form">
+                        <div class="form-group">
+                            <label for="currentPassword">Contraseña Actual</label>
+                            <div class="password-input">
+                                <input 
+                                    type="password" 
+                                    id="currentPassword" 
+                                    name="currentPassword"
+                                    minlength="8"
+                                    required
+                                >
+                                <button type="button" class="toggle-password">👁️</button>
                             </div>
-
-                            <div class="input-group">
-                                <input type="text" id="username" name="username" required placeholder=" "
-                                       pattern="[a-zA-Z0-9_]{3,15}" 
-                                       title="3-15 caracteres, solo letras, números y guiones bajos">
-                                <label for="username" class="input-label">Nombre de usuario</label>
-                            </div>
-
-                            <div class="input-group">
-                                <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder=" ">
-                                <label for="phone" class="input-label">Teléfono</label>
-                            </div>
-
-                            <div class="input-group">
-                                <textarea id="bio" name="bio" placeholder="Describe quién eres..."></textarea>
-                                <label for="bio" class="input-label">Biografía</label>
-                            </div>
-
-                            <button type="submit" class="settings-button">
-                                Guardar cambios
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Información de Usuario -->
-                    <div class="settings-section">
-                        <h3>Información de Usuario</h3>
-                        <form id="userInfoForm" class="settings-form">
-                            <div class="input-group">
-                                <input type="email" id="email" name="email" required placeholder=" ">
-                                <label for="email" class="input-label">Correo electrónico</label>
-                            </div>
-
-                            <button type="button" class="settings-button outline" id="changePasswordBtn">
-                                Cambiar contraseña
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Preferencias -->
-                    <div class="settings-section">
-                        <h3>Preferencias</h3>
-                        <form id="preferencesForm" class="settings-form">
-                            <div class="preferences-grid">
-                                <label class="preference-item">
-                                    <input type="checkbox" name="preferences" value="restaurants">
-                                    <span>Restaurantes</span>
-                                </label>
-                                <label class="preference-item">
-                                    <input type="checkbox" name="preferences" value="bars">
-                                    <span>Bares</span>
-                                </label>
-                                <label class="preference-item">
-                                    <input type="checkbox" name="preferences" value="cafes">
-                                    <span>Cafeterías</span>
-                                </label>
-                                <label class="preference-item">
-                                    <input type="checkbox" name="preferences" value="clubs">
-                                    <span>Antros</span>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Notificaciones -->
-                    <div class="settings-section">
-                        <h3>Notificaciones</h3>
-                        <form id="notificationsForm" class="settings-form">
-                            <div class="switch-group">
-                                <label class="switch-label">
-                                    <span>Notificaciones push</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="pushNotifications">
-                                        <span class="slider"></span>
-                                    </label>
-                                </label>
-                            </div>
-                            <div class="switch-group">
-                                <label class="switch-label">
-                                    <span>Notificaciones por email</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="emailNotifications">
-                                        <span class="slider"></span>
-                                    </label>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Privacidad -->
-                    <div class="settings-section">
-                        <h3>Privacidad</h3>
-                        <form id="privacyForm" class="settings-form">
-                            <div class="switch-group">
-                                <label class="switch-label">
-                                    <span>Perfil público</span>
-                                    <label class="switch">
-                                        <input type="checkbox" name="publicProfile">
-                                        <span class="slider"></span>
-                                    </label>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Acciones de cuenta -->
-                    <div class="settings-section danger-zone">
-                        <h3>Acciones de cuenta</h3>
-                        <div class="danger-actions">
-                            <button type="button" class="danger-btn" id="deleteAccountBtn">
-                                Eliminar cuenta
-                            </button>
-                            <button type="button" class="warning-btn" id="logoutBtn">
-                                Cerrar sesión
-                            </button>
                         </div>
+
+                        <div class="form-group">
+                            <label for="newPassword">Nueva Contraseña</label>
+                            <div class="password-input">
+                                <input 
+                                    type="password" 
+                                    id="newPassword" 
+                                    name="newPassword"
+                                    minlength="8"
+                                    required
+                                >
+                                <button type="button" class="toggle-password">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Confirmar Nueva Contraseña</label>
+                            <div class="password-input">
+                                <input 
+                                    type="password" 
+                                    id="confirmNewPassword" 
+                                    name="confirmNewPassword"
+                                    minlength="8"
+                                    required
+                                >
+                                <button type="button" class="toggle-password">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="settings-button">Cambiar Contraseña</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Zona de Peligro -->
+                <div class="settings-section danger-zone">
+                    <h3>Zona de Peligro</h3>
+                    <div class="danger-actions">
+                        <button type="button" class="warning-btn" id="logoutBtn">
+                            Cerrar Sesión
+                        </button>
+                        <button type="button" class="danger-btn" id="deleteAccountBtn">
+                            Eliminar Cuenta
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal de cambio de contraseña -->
-    <div class="modal" id="passwordModal">
-        <div class="modal-content">
-            <h2>Cambiar contraseña</h2>
-            <form id="passwordForm">
-                <div class="form-group">
-                    <label for="currentPassword">Contraseña actual</label>
-                    <div class="password-input">
-                        <input type="password" id="currentPassword" required>
-                        <button type="button" class="toggle-password">👁️</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="newPassword">Nueva contraseña</label>
-                    <div class="password-input">
-                        <input type="password" id="newPassword" required>
-                        <button type="button" class="toggle-password">👁️</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="confirmNewPassword">Confirmar nueva contraseña</label>
-                    <div class="password-input">
-                        <input type="password" id="confirmNewPassword" required>
-                        <button type="button" class="toggle-password">👁️</button>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="cancel-btn">Cancelar</button>
-                    <button type="submit" class="submit-btn">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="js/api.js"></script>
-    <script src="js/authService.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Verificar autenticación
-            if (!authService.isAuthenticated()) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Estado de la configuración
-            let settingsState = {
-                personalInfo: null,
-                preferences: [],
-                notifications: null,
-                privacy: null
-            };
-
-            // Elementos del DOM
-            const forms = {
-                personal: document.getElementById('personalInfoForm'),
-                account: document.getElementById('accountForm'),
-                preferences: document.getElementById('preferencesForm'),
-                notifications: document.getElementById('notificationsForm'),
-                privacy: document.getElementById('privacyForm')
-            };
-
-            const saveBtn = document.getElementById('saveSettingsBtn');
-            const passwordModal = document.getElementById('passwordModal');
-
-            // Cargar configuración inicial
-            async function loadSettings() {
-                try {
-                    // Aquí irán las llamadas a la API
-                    // const response = await apiService.getUserSettings();
-                    // settingsState = response;
-                    
-                    // Simulación de datos
-                    settingsState = {
-                        personalInfo: {
-                            fullName: "Usuario Ejemplo",
-                            phone: "1234567890",
-                            bio: "Mi biografía"
-                        },
-                        preferences: ["restaurants", "bars"],
-                        notifications: {
-                            push: true,
-                            email: false
-                        },
-                        privacy: {
-                            publicProfile: true
-                        }
-                    };
-
-                    updateFormsWithData();
-                } catch (error) {
-                    console.error('Error loading settings:', error);
-                }
-            }
-
-            // Actualizar formularios con datos
-            function updateFormsWithData() {
-                // Información personal
-                forms.personal.fullName.value = settingsState.personalInfo.fullName;
-                forms.personal.phone.value = settingsState.personalInfo.phone;
-                forms.personal.bio.value = settingsState.personalInfo.bio;
-
-                // Preferencias
-                settingsState.preferences.forEach(pref => {
-                    const checkbox = forms.preferences.querySelector(`input[value="${pref}"]`);
-                    if (checkbox) checkbox.checked = true;
-                });
-
-                // Notificaciones
-                forms.notifications.pushNotifications.checked = settingsState.notifications.push;
-                forms.notifications.emailNotifications.checked = settingsState.notifications.email;
-
-                // Privacidad
-                forms.privacy.publicProfile.checked = settingsState.privacy.publicProfile;
-            }
-
-            // Manejar cambios en los formularios
-            const allForms = document.querySelectorAll('.settings-form');
-            allForms.forEach(form => {
-                form.addEventListener('change', () => {
-                    saveBtn.style.display = 'block';
-                });
-            });
-
-            // Guardar cambios
-            saveBtn.addEventListener('click', async () => {
-                try {
-                    const updatedSettings = {
-                        personalInfo: {
-                            fullName: forms.personal.fullName.value,
-                            phone: forms.personal.phone.value,
-                            bio: forms.personal.bio.value
-                        },
-                        preferences: Array.from(forms.preferences.querySelectorAll('input:checked'))
-                            .map(cb => cb.value),
-                        notifications: {
-                            push: forms.notifications.pushNotifications.checked,
-                            email: forms.notifications.emailNotifications.checked
-                        },
-                        privacy: {
-                            publicProfile: forms.privacy.publicProfile.checked
-                        }
-                    };
-
-                    // await apiService.updateUserSettings(updatedSettings);
-                    saveBtn.style.display = 'none';
-                    showMessage('Configuración guardada exitosamente', 'success');
-                } catch (error) {
-                    console.error('Error saving settings:', error);
-                    showMessage('Error al guardar la configuración', 'error');
-                }
-            });
-
-            // Inicialización
-            await loadSettings();
-
-            // Event Listeners adicionales
-            document.getElementById('logoutBtn').addEventListener('click', () => {
-                authService.logout();
-            });
-
-            document.getElementById('deleteAccountBtn').addEventListener('click', async () => {
-                if (confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
-                    try {
-                        // await apiService.deleteAccount();
-                        authService.logout();
-                    } catch (error) {
-                        console.error('Error deleting account:', error);
-                    }
-                }
-            });
-
-            // Manejar cambio de avatar
-            const profileAvatar = document.getElementById('profileAvatar');
-            profileAvatar.addEventListener('click', () => {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.onchange = async (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        try {
-                            // Aquí irá la lógica para subir la imagen
-                            // await apiService.uploadAvatar(file);
-                            showMessage('Foto de perfil actualizada', 'success');
-                        } catch (error) {
-                            showMessage('Error al actualizar la foto', 'error');
-                        }
-                    }
-                };
-                input.click();
-            });
-
-            // Manejar guardado de configuración
-            document.querySelectorAll('.settings-form').forEach(form => {
-                form.addEventListener('change', () => {
-                    document.getElementById('saveSettingsBtn').style.display = 'block';
-                });
-            });
-
-            const personalInfoForm = document.getElementById('personalInfoForm');
-            const userInfoForm = document.getElementById('userInfoForm');
-
-            // Cargar datos del usuario
-            async function loadUserData() {
-                try {
-                    const userData = await apiService.getUserProfile();
-                    // Rellenar formularios
-                    personalInfoForm.fullName.value = userData.fullName || '';
-                    personalInfoForm.username.value = userData.username || '';
-                    personalInfoForm.phone.value = userData.phone || '';
-                    personalInfoForm.bio.value = userData.bio || '';
-                    userInfoForm.email.value = userData.email || '';
-
-                    // Activar labels si hay datos
-                    document.querySelectorAll('.settings-form input').forEach(input => {
-                        if (input.value) {
-                            input.classList.add('has-value');
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error loading user data:', error);
-                }
-            }
-
-            // Manejar envío de formularios
-            personalInfoForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                try {
-                    const formData = new FormData(personalInfoForm);
-                    await apiService.updateUserProfile(Object.fromEntries(formData));
-                    showMessage('Información personal actualizada', 'success');
-                } catch (error) {
-                    showMessage('Error al actualizar la información', 'error');
-                }
-            });
-
-            // Cargar datos iniciales
-            await loadUserData();
-        });
-    </script>
+    <!-- Incluir scripts -->
+    <script src="js/settingsService.js"></script>
+    <script src="js/sessionCheck.js"></script>
+    <script src="js/logout.js"></script>
 </body>
 </html>

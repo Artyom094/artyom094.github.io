@@ -1669,86 +1669,7 @@ input:checked + .slider:before {
 }
 
 /* Estilos mejorados para settings */
-.settings-form input[type="text"],
-.settings-form input[type="email"],
-.settings-form input[type="tel"],
-.settings-form textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: 1em;
-    transition: all 0.3s ease;
-    background: var(--white);
-    color: var(--text-color);
-    margin-bottom: 10px;
-}
 
-.settings-form input:focus,
-.settings-form textarea:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(74, 137, 220, 0.1);
-    outline: none;
-}
-
-.settings-form textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.settings-form .input-group {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.settings-form .input-label {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--gray);
-    transition: all 0.3s ease;
-    pointer-events: none;
-    background: var(--white);
-    padding: 0 5px;
-}
-
-.settings-form input:focus ~ .input-label,
-.settings-form input:not(:placeholder-shown) ~ .input-label {
-    top: 0;
-    font-size: 0.8em;
-    color: var(--primary-color);
-}
-
-.settings-button {
-    width: 100%;
-    padding: 12px;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: var(--border-radius);
-    font-size: 1em;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-}
-
-.settings-button:hover {
-    background: #3872c0;
-    transform: translateY(-2px);
-}
-
-.settings-button.outline {
-    background: transparent;
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-}
-
-.settings-button.outline:hover {
-    background: var(--primary-color);
-    color: white;
-}
 
 /* Estilos mejorados para el modal de agregar lugar */
 #addPlaceModal .modal-content {
@@ -1872,4 +1793,221 @@ input:checked + .slider:before {
     #addPlaceForm .checkbox-label {
         background: var(--gray-dark);
     }
+}
+
+.settings-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--spacing);
+}
+
+.settings-toggle-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.settings-toggle-btn:hover {
+    background-color: #3872c0;
+    transform: translateY(-2px);
+}
+
+.settings-toggle-btn:active {
+    transform: translateY(0);
+}
+
+.settings-toggle-btn span {
+    font-size: 1.2em;
+}
+
+.settings-dropdown {
+    width: 100%;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--spacing);
+    margin-top: 10px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+#reviewsSection {
+    margin-top: 20px;
+}
+
+#reviewForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+#reviewText {
+    padding: 10px;
+    margin-bottom: 10px;
+    min-height: 100px;
+    resize: vertical;
+}
+
+#reviewRating {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.review-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.review-text {
+    font-size: 1.1em;
+}
+
+.review-rating {
+    font-weight: bold;
+    color: #f39c12;
+}
+
+.review-date {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+/* Estilos generales para el contenedor de reseñas */
+#reviewsContainer {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Estilo para cada reseña */
+.review-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.review-item .review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.review-item .review-rating {
+    font-size: 1.2em;
+    color: #f39c12;
+}
+
+.review-item .review-user {
+    font-size: 1em;
+    color: #7f8c8d;
+}
+
+.review-item .review-comment {
+    font-size: 1.1em;
+    margin-top: 10px;
+    color: #2c3e50;
+}
+
+.review-item .review-image img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.review-item .review-actions {
+    margin-top: 15px;
+}
+
+.delete-review-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-review-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Estilos para el formulario de reseña */
+#reviewForm {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#reviewForm label {
+    font-size: 1em;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+}
+
+#reviewForm input,
+#reviewForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+#reviewForm button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+#reviewForm button:hover {
+    background-color: #2980b9;
+}
+
+/* Estilo para el mensaje de error */
+.error-message {
+    padding: 15px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+/* Estilo para el mensaje cuando el formulario está deshabilitado */
+#reviewsContainer p {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #27ae60;
 }

@@ -1,0 +1,186 @@
+/* Estilos específicos para la página de mapa */
+
+.place-item {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    padding: 12px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.place-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.place-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.place-name {
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.place-category {
+    background-color: var(--gray-light);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    color: var(--primary-color);
+}
+
+.place-address {
+    font-size: 0.9em;
+    color: var(--gray);
+}
+
+.map-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.error-message {
+    padding: 15px;
+    background-color: #ffebee;
+    color: #c62828;
+    border-radius: var(--border-radius);
+    margin: 10px 0;
+}
+
+.no-results {
+    padding: 15px;
+    text-align: center;
+    color: var(--gray);
+}
+
+.category-filters {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.filter-btn {
+    background: var(--white);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: var(--text-color);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.place-distance {
+    font-size: 0.8em;
+    color: var(--gray);
+    margin-top: 5px;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .place-item {
+        background-color: var(--gray-dark);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .filter-btn {
+        background: var(--gray-dark);
+        color: var(--text-color);
+    }
+
+    .filter-btn.active {
+        background: var(--primary-color);
+        color: var(--white);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .category-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 0 10px;
+    }
+
+    .category-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-btn {
+        flex-shrink: 0;
+    }
+}
+
+.category-filters {
+    margin: var(--spacing) 0;
+}
+
+.category-select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--white);
+    font-size: 1em;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.category-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 137, 220, 0.1);
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .category-select {
+        background-color: var(--gray-dark);
+        border-color: var(--border-color);
+        color: var(--white);
+    }
+    
+    .category-select option {
+        background-color: var(--gray-dark);
+        color: var(--white);
+    }
+}
+
+.google-maps-btn {
+    display: inline-block;
+    background-color: #4285F4;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease-in-out;
+    border: none;
+    cursor: pointer;
+}
+
+.google-maps-btn:hover {
+    background-color: #357ae8;
+}
