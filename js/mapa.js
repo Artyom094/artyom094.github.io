@@ -1,64 +1,62 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const placesList = document.getElementById("placesList");
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    
-    let places = []; // Almacenará los lugares obtenidos de la API
-    
+document.addEventListener("DOMContentLoaded", async function () {
+    // Inicializar el mapa
+    const map = L.map("map").setView([26.0806, -98.2883], 13); // Coordenadas iniciales (Reynosa)
+
+    // Cargar los tiles de OpenStreetMap
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+
+    // Función para obtener lugares desde la API
     async function fetchPlaces() {
         try {
-            const response = await fetch("https://cityvibess.bsite.net/api/Places/api/Places");
+            const response = await fetch("https://cityvibess.bsite.net/api/Places/api/places");
             if (!response.ok) throw new Error("Error al obtener los lugares");
-            
-            places = await response.json();
-            renderPlaces("all");
+
+            const places = await response.json();
+            console.log("Lugares obtenidos:", places);
+
+            places.forEach(place => {
+                if (place.Latitude && place.Longitude) {
+                    addMarker(place);
+                }
+            });
         } catch (error) {
             console.error("Error:", error);
-            placesList.innerHTML = "<p>No se pudieron cargar los lugares.</p>";
+            alert("No se pudieron cargar los lugares.");
         }
     }
-    
-    function renderPlaces(categoryId) {
-        placesList.innerHTML = "";
-        
-        let filteredPlaces = categoryId === "all" ? places : places.filter(place => place.Category.toLowerCase() === getCategoryName(categoryId));
-        
-        if (filteredPlaces.length === 0) {
-            placesList.innerHTML = "<p>No hay lugares disponibles en esta categoría.</p>";
-            return;
+
+    // Función para agregar un marcador en el mapa
+    function addMarker(place) {
+        const marker = L.marker([parseFloat(place.Latitude), parseFloat(place.Longitude)])
+            .addTo(map)
+            .bindPopup(`<b>${place.Name}</b><br>${place.Category || "Sin categoría"}`);
+
+        marker.on("click", () => {
+            map.setView([parseFloat(place.Latitude), parseFloat(place.Longitude)], 15);
+        });
+    }
+
+    // Botón para obtener la ubicación del usuario
+    document.getElementById("locationBtn").addEventListener("click", () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const { latitude, longitude } = position.coords;
+                    map.setView([latitude, longitude], 15);
+                    L.marker([latitude, longitude])
+                        .addTo(map)
+                        .bindPopup("📍 Estás aquí")
+                        .openPopup();
+                },
+                () => alert("No se pudo obtener la ubicación.")
+            );
+        } else {
+            alert("Tu navegador no soporta geolocalización.");
         }
-        
-        filteredPlaces.forEach(place => {
-            const placeItem = document.createElement("div");
-            placeItem.classList.add("place-item");
-            placeItem.innerHTML = `
-                <h4>${place.Name}</h4>
-                <p>${place.City}</p>
-                <p>⭐ ${place.Rating}</p>
-                <p>📍 ${place.Latitude}, ${place.Longitude}</p>
-            `;
-            placesList.appendChild(placeItem);
-        });
-    }
-    
-    function getCategoryName(categoryId) {
-        const categories = {
-            "1": "parques",
-            "2": "restaurantes",
-            "5": "museos",
-            "6": "centros comerciales",
-            "7": "bares",
-            "8": "cafeterías"
-        };
-        return categories[categoryId] || "";
-    }
-    
-    filterButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            document.querySelector(".filter-btn.active").classList.remove("active");
-            this.classList.add("active");
-            renderPlaces(this.dataset.categoryId);
-        });
     });
-    
+
+    // Llamar a la función para cargar los lugares
     fetchPlaces();
 });

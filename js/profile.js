@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Mostrar los datos del usuario
         userNameElement.textContent = currentUser.Username;  // Asegurando que se refleje en el HTML
-        userAvatarElement.src = currentUser.ImagePath || "/api/placeholder/120/120";
+        userAvatarElement.src = currentUser.ImagePath || "img/pp.png";  // Usar una imagen por defecto si no hay avatar
 
         // Obtener reseñas del usuario
         const reviewsResponse = await fetch(`https://cityvibess.bsite.net/api/Reviews`);

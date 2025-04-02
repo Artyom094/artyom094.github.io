@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error(error);
-            showError('No se pudieron cargar las reseñas');
+            showError('No hay reseñas para mostrar.');
         }
     }
 

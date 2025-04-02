@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Lugar</title>
+    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="style/addplace.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="header responsive-header">
+            <a href="profile.html" class="back-button">
+                <span class="icon">←</span>
+            </a>
+            <h1 class="responsive-title">Agregar Lugar</h1>
+        </div>
+
+        <div class="content responsive-content">
+            <form id="addPlaceForm">
+                <label for="placeName">Nombre del Lugar:</label>
+                <input type="text" id="placeName" name="placeName" required>
+
+                <label for="city">Ciudad:</label>
+                <input type="text" id="city" name="city" required>
+
+                <label for="category">Categoría:</label>
+                <select id="category" name="category" required>
+                    <option value="Parques">Parques</option>
+                    <option value="Restaurantes">Restaurantes</option>
+                    <option value="Museos">Museos</option>
+                    <option value="Centros Comerciales">Centros Comerciales</option>
+                    <option value="Bares">Bares</option>
+                    <option value="Cafeterías">Cafeterías</option>
+                </select>
+
+                <label for="address">Dirección o Plus Code:</label>
+                <input type="text" id="address" name="address" placeholder="Ej. 2MV7+GC Reynosa, Tamaulipas">
+                <small id="addressInfo">Puedes ingresar una dirección completa o un Plus Code.</small>
+
+                <!-- Campos para Latitud y Longitud -->
+                <label for="latitude">Latitud:</label>
+                <input type="number" step="0.0000001" id="latitude" name="latitude" placeholder="Ej. 26.07871308220671">
+
+                <label for="longitude">Longitud:</label>
+                <input type="number" step="0.0000001" id="longitude" name="longitude" placeholder="Ej. -98.29368060901338">
+
+                <button type="submit">Agregar Lugar</button>
+            </form>
+
+            <div class="tutorial">
+                <h2>¿Cómo obtener un Plus Code?</h2>
+                <p>
+                    Para obtener un Plus Code, simplemente utiliza Google Maps. Aquí están los pasos:
+                </p>
+                <ol>
+                    <li>Abre <a href="https://maps.google.com" target="_blank">Google Maps</a>.</li>
+                    <li>Busca la dirección o el lugar donde te encuentras.</li>
+                    <li>Haz clic derecho sobre el lugar y selecciona "¿Qué hay aquí?"</li>
+                    <li>El Plus Code aparecerá en la parte inferior de la pantalla, algo como <strong>2MV7+GC Reynosa, Tamaulipas</strong>.</li>
+                    <li>Copia el Plus Code y pégalo en el campo de "Dirección o Plus Code".</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/addplace.js"></script>
+</body>
+</html>

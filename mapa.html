@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CityVibes - Mapa</title>
-    <link rel="stylesheet" href="style/styles.css">
-    <link rel="stylesheet" href="style/mapa.css">
+    <link rel="stylesheet" href="style/pages.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
     <div class="app-container">
@@ -27,12 +27,12 @@
             </div>
             
             <div class="map-container responsive-map">
-                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1rS_p_MhYbN6Pc9IJgkFFMc67n3VyCv0&ehbc=2E312F&noprof=1" width="640" height="480" class="map-iframe"></iframe>
+                <div id="map" class="map-iframe"></div> <!-- Aquí se cargará el mapa -->
                 <div class="map-buttons">
                     <button class="map-btn" id="locationBtn">📍 Mi ubicación</button>
                 </div>
             </div>
-            
+                        
             <!-- Categorías -->
             <div class="category-filters">
                 <button class="filter-btn active" data-category-id="all">Todos</button>
@@ -71,6 +71,9 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/mapa.js"></script>
+    
     <script src="js/categoriemap.js"></script>
 </body>
 </html>
