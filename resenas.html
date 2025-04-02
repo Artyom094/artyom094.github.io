@@ -1,1 +1,55 @@
-<iframe width="1250" height="703" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Rick Astley - Never Gonna Give You Up (Official Music Video)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes - Reseñas</title>
+    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="style/index.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header responsive-header">
+            <a href="profile.html" class="avatar responsive-avatar">
+                <img src="img/pp.png" alt="Avatar" id="userAvatar">
+            </a>
+            <h1 class="responsive-title">City Vibes</h1>
+        </div>
+        
+        <!-- Content Section -->
+        <div class="content responsive-content">
+            <h2 class="section-title">
+                <span class="icon">⭐</span> Últimas Reseñas
+            </h2>
+            <div id="reviewsContainer" class="place-list responsive-list">
+                <!-- Aquí se cargarán las reseñas -->
+                <div class="initial-message" id="initialMessage">
+                    Cargando reseñas...
+                </div>
+                <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+                    Cargando...
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav responsive-nav">
+            <a href="index.html" class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="mapa.html" class="nav-item">
+                <div class="nav-icon">🗺️</div>
+                <span class="nav-text">Mapa</span>
+            </a>
+            <a href="resenas.html" class="nav-item active">
+                <div class="nav-icon">⭐</div>
+                <span class="nav-text">Reseñas</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="js/reviewspage.js"></script>
+</body>
+</html>

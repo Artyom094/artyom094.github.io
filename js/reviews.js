@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Obtener el ID del lugar desde la URL (como en el script anterior)
+    // Obtener el ID del lugar desde la URL
     const urlParams = new URLSearchParams(window.location.search);
     const placeId = urlParams.get('id');
     
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // URL de las APIs
     const reviewsApiUrl = 'https://cityvibess.bsite.net/api/Reviews';
     const reviewsByPlaceApiUrl = `https://cityvibess.bsite.net/api/Reviews/ByPlace/${placeId}`;
+    const usersApiUrl = 'https://cityvibess.bsite.net/api/Users';
     
     // Verificar si el usuario está logueado
     if (!userId) {
@@ -43,14 +44,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para cargar las reseñas del lugar
     async function loadReviews(placeId) {
         try {
-            const response = await fetch(reviewsByPlaceApiUrl, { method: 'GET' });
+            const reviewsResponse = await fetch(reviewsByPlaceApiUrl);
+            const usersResponse = await fetch(usersApiUrl);
             
-            if (!response.ok) {
-                throw new Error('Error al cargar las reseñas.');
+            if (!reviewsResponse.ok || !usersResponse.ok) {
+                throw new Error('Error al cargar las reseñas o los usuarios.');
             }
             
-            const reviews = await response.json();
-            displayReviews(reviews);
+            const reviews = await reviewsResponse.json();
+            const users = await usersResponse.json();
+            
+            displayReviews(reviews, users);
             
             // Comprobar si el usuario ya ha dejado una reseña
             const userReview = reviews.find(review => review.Id_User === parseInt(userId));
@@ -115,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Función para mostrar las reseñas en la interfaz
-    function displayReviews(reviews) {
+    function displayReviews(reviews, users) {
         reviewsContainer.innerHTML = '';
         
         if (reviews.length === 0) {
@@ -124,19 +128,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         reviews.forEach(review => {
+            const user = users.find(u => u.Id_User === review.Id_User);
+            const username = user ? user.Username : 'Usuario desconocido';
+
             const reviewElement = document.createElement('div');
             reviewElement.classList.add('review-item');
             
             reviewElement.innerHTML = `
                 <div class="review-header">
                     <span class="review-rating">⭐ ${review.Rating}</span>
-                    <span class="review-user">Usuario: ${review.Id_User}</span>
+                    <span class="review-user">Usuario: ${username}</span>
                 </div>
                 <p class="review-comment">${review.Comment}</p>
                 <p class="review-image">
                 </p>
                 <div class="review-actions">
-                    ${review.Id_User === parseInt(userId) ? `
+                    ${review.Id_User === parseInt(userId) ? ` 
                         <button class="delete-review-btn" data-review-id="${review.Id_Review}">Eliminar</button>
                     ` : ''}
                 </div>

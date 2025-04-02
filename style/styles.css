@@ -2011,3 +2011,74 @@ input:checked + .slider:before {
     font-weight: bold;
     color: #27ae60;
 }
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.review-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-rating {
+    font-size: 1.2em;
+    color: gold;
+}
+
+.review-user {
+    font-weight: bold;
+    color: #333;
+}
+
+.review-comment {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #555;
+}
+
+.review-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 1em;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.review-link:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
