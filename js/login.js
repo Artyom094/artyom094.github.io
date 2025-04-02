@@ -46,16 +46,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw new Error('No se pudo obtener el ID del usuario.');
                 }
 
-                // 🔹 Paso 3: Guardar el token de sesión en una cookie sin expiración
-                document.cookie = `authToken=${userData.Value}; path=/;`;// Guardar el token de autenticación
-
-                // También guardar el ID del usuario en una cookie
-                document.cookie = `userId=${userId}; path=/;`;
+                // 🔹 Paso 3: Guardar el token de sesión y el ID del usuario en LocalStorage
+                localStorage.setItem('authToken', userData.Value); // Guardar el token de autenticación
+                localStorage.setItem('userId', userId); // Guardar el ID del usuario
 
                 mostrarEstado('Inicio de sesión exitoso', 'success');
 
-                // 🔹 Paso 4: Mostrar el ID en un alert
-
+                // 🔹 Paso 4: Redirigir a la página principal
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 1000);
@@ -63,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 mostrarEstado(error.message || 'Error al iniciar sesión', 'error');
                 console.error('Error de login:', error);
-                // Si hay algún error, eliminar cualquier cookie previa
-                eliminarCookies();
+                // Si hay algún error, eliminar cualquier dato previo
+                limpiarLocalStorage();
             }
         });
     }
@@ -96,9 +93,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Función para eliminar las cookies (por ejemplo, en el logout)
-    function eliminarCookies() {
-        document.cookie = "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        document.cookie = "userId=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    // Función para limpiar LocalStorage (por ejemplo, en el logout)
+    function limpiarLocalStorage() {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
     }
 });

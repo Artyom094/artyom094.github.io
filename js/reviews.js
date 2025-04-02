@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const placeId = urlParams.get('id');
     
-    // Obtener el ID del usuario desde las cookies
-    const userId = getCookie('userId');  // Necesitas una función para obtener el userId desde la cookie
+    // Obtener el ID del usuario desde LocalStorage
+    const userId = localStorage.getItem('userId');  // Obtener el userId desde localStorage
     
     // Elementos DOM
     const reviewsContainer = document.getElementById('reviewsContainer');
@@ -177,12 +177,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p>${message}</p>
             </div>
         `;
-    }
-
-    // Función para obtener el valor de la cookie
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
     }
 });

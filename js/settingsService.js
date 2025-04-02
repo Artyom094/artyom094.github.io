@@ -1,17 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const userId = getCookie("userId"); // Obtén el ID de usuario desde la cookie
+    const userId = localStorage.getItem("userId"); // Obtén el ID de usuario desde localStorage
     const settingsUsername = document.getElementById("settingsUsername");
     const settingsEmail = document.getElementById("settingsEmail");
     const userUsername = document.getElementById("userUsername");
     const userEmail = document.getElementById("userEmail");
     const personalInfoForm = document.getElementById("personalInfoForm");
     const passwordChangeForm = document.getElementById("passwordChangeForm");
-    
-    // Función para obtener el valor de las cookies
-    function getCookie(name) {
-        let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        if (match) return match[2];
-    }
 
     // Obtener los datos del usuario al cargar la página
     async function fetchUserData() {

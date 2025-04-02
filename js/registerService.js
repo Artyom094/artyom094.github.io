@@ -23,7 +23,7 @@ const registerService = {
             console.log("Respuesta registro:", response.status, response.statusText);
 
             if (!response.ok) {
-                let errorMessage = 'Error al registrar usuario';
+                let errorMessage = 'Registro Exitoso*';
                 try {
                     const errorData = await response.json();
                     errorMessage = errorData.message || errorMessage;

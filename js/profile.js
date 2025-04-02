@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    const userId = getCookie("userId");
+    const userId = localStorage.getItem("userId");
     if (!userId) {
         window.location.href = "login.html";
         return;
@@ -55,10 +55,3 @@ document.addEventListener("DOMContentLoaded", async function () {
         userReviewsContainer.innerHTML = "<p>Error al cargar reseñas</p>";
     }
 });
-
-// Función para obtener cookies
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-}
