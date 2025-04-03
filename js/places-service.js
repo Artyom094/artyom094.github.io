@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const placeContent = document.getElementById('placeContent');
     
     // URL de la API con el ID del lugar
-    const API_URL = `https://cityvibess.bsite.net/api/places?id=${placeId}`;
+    const API_URL = `https://cityvibess.bsite.net/api/places/${placeId}`;
     
     // Verificar si hay ID de lugar
     if (!placeId) {

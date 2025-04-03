@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const reviewsContainer = document.getElementById('reviewsContainer');
     const reviewsApiUrl = 'https://cityvibess.bsite.net/api/Reviews';
     const usersApiUrl = 'https://cityvibess.bsite.net/api/Users';
-    const placesApiUrl = 'https://cityvibess.bsite.net/api/Places/Api/Places';  // Asumimos que esta API devuelve los lugares.
+    const placesApiUrl = 'https://cityvibess.bsite.net/api/Places';  // Asumimos que esta API devuelve los lugares.
 
     // Cargar las últimas reseñas
     loadReviews();

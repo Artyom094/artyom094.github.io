@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     async function fetchPlaces() {
         try {
-            const response = await fetch("https://cityvibess.bsite.net/api/Places/api/Places");
+            const response = await fetch("https://cityvibess.bsite.net/api/Places/");
             if (!response.ok) throw new Error("Error al obtener los lugares");
             
             places = await response.json();

@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Función para obtener lugares desde la API
     async function fetchPlaces() {
         try {
-            const response = await fetch("https://cityvibess.bsite.net/api/Places/api/places");
+            const response = await fetch("https://cityvibess.bsite.net/api/Places/");
             if (!response.ok) throw new Error("Error al obtener los lugares");
 
             const places = await response.json();

@@ -1,6 +1,6 @@
 async function fetchPlaces() {
     try {
-        const response = await fetch('https://cityvibess.bsite.net/api/Places/api/places');
+        const response = await fetch('https://cityvibess.bsite.net/api/Places/');
         if (!response.ok) {
             throw new Error('Error al obtener los lugares');
         }
