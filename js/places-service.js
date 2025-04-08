@@ -86,24 +86,57 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="detail-text">Fecha de creación: ${formatDate(createdDate)}</span>
                     </div>
                     ` : ''}
+                    ${latitude && longitude ? `
+                    <div class="detail-item">
+                        <span class="detail-icon">📍</span>
+                        <span class="detail-text" id="placeAddress">Cargando dirección...</span>
+                    </div>
+                    ` : ''}
                 </div>
             </div>
             
             ${latitude && longitude ? `
-            <div class="map-section place-container">
-                <h3>Ubicación</h3>
-                <div class="map-container">
-                    <iframe 
-                        src="https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
             </div>
             ` : ''}
         `;
         
         // Actualizar el contenido
         placeContent.innerHTML = placeHTML;
+
+        // Si tenemos coordenadas, obtener y mostrar la dirección
+        if (latitude && longitude) {
+            getAddressFromCoordinates(latitude, longitude)
+                .then(address => {
+                    const addressElement = document.getElementById('placeAddress');
+                    if (addressElement) {
+                        addressElement.textContent = address;
+                    }
+                });
+        }
+    }
+
+    /**
+     * Obtiene la dirección a partir de coordenadas usando OpenCage
+     * @param {number} lat - Latitud
+     * @param {number} lng - Longitud
+     * @returns {Promise<string>} - Dirección formateada
+     */
+    async function getAddressFromCoordinates(lat, lng) {
+        const API_KEY = 'e85379f29adc48a7abdc67d1119871e0'; // Reemplazar con tu API key
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${API_KEY}&language=es`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.results && data.results.length > 0) {
+                return data.results[0].formatted;
+            }
+            return 'Dirección no disponible';
+        } catch (error) {
+            console.error('Error al obtener la dirección:', error);
+            return 'Error al obtener la dirección';
+        }
     }
     
     /**

@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.log("Lugares obtenidos:", places);
 
             places.forEach(place => {
-                if (place.Latitude && place.Longitude) {
+                console.log("Procesando lugar:", place);
+                if (place.Latitude != null && place.Longitude != null) {
                     addMarker(place);
                 }
             });
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Función para agregar un marcador en el mapa
     function addMarker(place) {
+        console.log("Agregando marcador para:", place.Name);
         const marker = L.marker([parseFloat(place.Latitude), parseFloat(place.Longitude)])
             .addTo(map)
             .bindPopup(`<b>${place.Name}</b><br>${place.Category || "Sin categoría"}`);

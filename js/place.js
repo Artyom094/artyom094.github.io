@@ -4,8 +4,34 @@ async function fetchPlaces() {
         if (!response.ok) {
             throw new Error('Error al obtener los lugares');
         }
+
         const places = await response.json();
-        displayPlaces(places);
+
+        // Obtener averageRating por cada lugar y reemplazar Rating original
+        const placesWithRatings = await Promise.all(
+            places.map(async place => {
+                try {
+                    const ratingResponse = await fetch(`https://cityvibess.bsite.net/api/Reviews/AverageRating/${place.Id_Place}`);
+                    if (!ratingResponse.ok) {
+                        throw new Error(`Error al obtener el rating del lugar ${place.Id_Place}`);
+                    }
+
+                    const averageRatingData = await ratingResponse.json();
+                    return {
+                        ...place,
+                        Rating: averageRatingData.averageRating ?? 'N/A'
+                    };
+                } catch (err) {
+                    console.warn(`Fallo al obtener rating para el lugar ${place.Id_Place}:`, err);
+                    return {
+                        ...place,
+                        Rating: 'N/A'
+                    };
+                }
+            })
+        );
+
+        displayPlaces(placesWithRatings);
     } catch (error) {
         console.error('Error al cargar los lugares:', error);
         document.getElementById('initialMessage').innerText = 'Error al cargar lugares.';
@@ -29,14 +55,13 @@ function displayPlaces(places) {
             <p class="place-category">Categoría: ${place.Category}</p>
             <p class="place-city">Ciudad: ${place.City}</p>
             <p class="place-rating">Calificación: ${place.Rating}</p>
-            <p class="place-address">Ubicación: <a href="https://www.google.com/maps?q=${place.Latitude},${place.Longitude}" target="_blank">Ver en el mapa</a></p>
             <p class="place-created">Fecha de creación: ${new Date(place.Creation_Date).toLocaleDateString()}</p>
         `;
-        
+
         placeElement.addEventListener('click', () => {
             window.location.href = `lugar.html?id=${place.Id_Place}`;
         });
-        
+
         placesList.appendChild(placeElement);
     });
 
