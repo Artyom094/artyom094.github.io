@@ -17,7 +17,12 @@
             </a>
             <h1 class="responsive-title" id="placeNameHeader">Cargando...</h1>
         </div>
-        
+
+        <!-- Botón para reportar lugar -->
+        <div class="report-button-container" style="margin-top: 20px; text-align: center;">
+            <button id="reportButton" class="report-button">🚩 Reportar Lugar</button>
+        </div>
+                
         <!-- Contenido principal -->
         <div class="content responsive-content">
             <div id="placeContent">
@@ -28,19 +33,18 @@
         <!-- Navegación inferior -->
         <div id="reviewsContainer"></div>
 
-<!-- Formulario para agregar reseña -->
-<form id="reviewForm">
-    <label for="rating">Calificación (1-5):</label>
-    <input type="number" id="rating" min="1" max="5" required />
-    
-    <label for="comment">Comentario:</label>
-    <textarea id="comment" required></textarea>
-    
-    <button type="submit" id="submitReview">Publicar Reseña</button>
-</form>
+        <!-- Formulario para agregar reseña -->
+        <form id="reviewForm">
+            <label for="rating">Calificación (1-5):</label>
+            <input type="number" id="rating" min="1" max="5" required />
+            
+            <label for="comment">Comentario:</label>
+            <textarea id="comment" required></textarea>
+            
+            <button type="submit" id="submitReview">Publicar Reseña</button>
+        </form>
 
-<script src="js/reviews.js"></script>
-
+        <script src="js/reviews.js"></script>
     </div>
 </body>
 </html>

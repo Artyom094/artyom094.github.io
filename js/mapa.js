@@ -1,13 +1,10 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    // Inicializar el mapa
-    const map = L.map("map").setView([26.0806, -98.2883], 13); // Coordenadas iniciales (Reynosa)
+    const map = L.map("map").setView([26.0806, -98.2883], 13);
 
-    // Cargar los tiles de OpenStreetMap
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '&copy; OpenStreetMap',
     }).addTo(map);
 
-    // Función para obtener lugares desde la API
     async function fetchPlaces() {
         try {
             const response = await fetch("https://cityvibess.bsite.net/api/Places/");
@@ -17,9 +14,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.log("Lugares obtenidos:", places);
 
             places.forEach(place => {
-                console.log("Procesando lugar:", place);
-                if (place.Latitude != null && place.Longitude != null) {
-                    addMarker(place);
+                const lat = parseFloat(place.Latitude);
+                const lng = parseFloat(place.Longitude);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    L.marker([lat, lng])
+                        .addTo(map)
+                        .bindPopup(`<b>${place.Name}</b><br>${place.Category}`);
+                } else {
+                    console.warn("Lugar con coordenadas inválidas:", place);
                 }
             });
         } catch (error) {
@@ -28,37 +30,5 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    // Función para agregar un marcador en el mapa
-    function addMarker(place) {
-        console.log("Agregando marcador para:", place.Name);
-        const marker = L.marker([parseFloat(place.Latitude), parseFloat(place.Longitude)])
-            .addTo(map)
-            .bindPopup(`<b>${place.Name}</b><br>${place.Category || "Sin categoría"}`);
-
-        marker.on("click", () => {
-            map.setView([parseFloat(place.Latitude), parseFloat(place.Longitude)], 15);
-        });
-    }
-
-    // Botón para obtener la ubicación del usuario
-    document.getElementById("locationBtn").addEventListener("click", () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    const { latitude, longitude } = position.coords;
-                    map.setView([latitude, longitude], 15);
-                    L.marker([latitude, longitude])
-                        .addTo(map)
-                        .bindPopup("📍 Estás aquí")
-                        .openPopup();
-                },
-                () => alert("No se pudo obtener la ubicación.")
-            );
-        } else {
-            alert("Tu navegador no soporta geolocalización.");
-        }
-    });
-
-    // Llamar a la función para cargar los lugares
     fetchPlaces();
 });

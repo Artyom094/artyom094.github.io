@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CityVibes - Inicio</title>
     <link rel="stylesheet" href="style/pages.css">
-    
 </head>
 <body>
     <div class="app-container">
@@ -19,21 +18,70 @@
             <h2 class="section-title">
                 <span class="icon"></span> Bienvenido a City Vibes
             </h2>
+
+            <!-- Recomendaciones de la semana -->
+            <div id="recommendedPlaces" class="recommended-places-section">
+                <h3>Recomendaciones de la Semana</h3>
+                <!-- Aquí se mostrarán las recomendaciones -->
+            </div>
+
+            <!-- Filtros y búsqueda -->
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="Buscar lugar..." class="filter-input">
+                
+                <select id="categoryFilter" class="filter-input">
+                    <option value="">Filtrar por categoría</option>
+                    <option value="Parques">Parques</option>
+                    <option value="Restaurantes">Restaurantes</option>
+                    <option value="Antros gay">Antros gay</option>
+                    <option value="Museos">Museos</option>
+                    <option value="Centros Comerciales">Centros Comerciales</option>
+                    <option value="Bares">Bares</option>
+                    <option value="Cafeterías">Cafeterías</option>
+                </select>
+
+                <select id="cityFilter" class="filter-input">
+                    <option value="">Filtrar por ciudad</option>
+                    <option value="Reynosa">Reynosa</option>
+                    <option value="Tampico">Tampico</option>
+                </select>
+
+                <select id="ratingFilter" class="filter-input">
+                    <option value="">Filtrar por calificación</option>
+                    <option value="1">1 Estrella</option>
+                    <option value="2">2 Estrellas</option>
+                    <option value="3">3 Estrellas</option>
+                    <option value="4">4 Estrellas</option>
+                    <option value="5">5 Estrellas</option>
+                </select>
+
+                <select id="sortBy" class="filter-input">
+                    <option value="newest">Más nuevo</option>
+                    <option value="oldest">Más antiguo</option>
+                </select>
+            </div>
+
+            <!-- Lista de lugares -->
             <div id="categoryResults" class="place-list responsive-list">
-                <div class="initial-message" id="initialMessage">
-                    Cargando lugares populares...
-                </div>
                 <div class="loading-indicator" id="loadingIndicator" style="display: none;">
                     Cargando...
                 </div>
             </div>
+
+            <!-- Paginación -->
+            <div class="pagination">
+                <button id="prevPage" class="page-button" disabled>Anterior</button>
+                <span id="pageNumber">Página 1</span>
+                <button id="nextPage" class="page-button">Siguiente</button>
+            </div>
         </div>
+
         <nav class="bottom-nav responsive-nav">
-            <a href="index.html" class="nav-item active">
+            <a href="index.html" class="nav-item">
                 <div class="nav-icon">🏠</div>
                 <span class="nav-text">Home</span>
             </a>
-            <a href="mapa.html" class="nav-item">
+            <a href="mapa.html" class="nav-item active">
                 <div class="nav-icon">🗺️</div>
                 <span class="nav-text">Mapa</span>
             </a>
@@ -43,8 +91,7 @@
             </a>
         </nav>
     </div>
+
     <script src="js/place.js"></script>
-    <script src="js/avatar.js"></script>
-    
 </body>
 </html>

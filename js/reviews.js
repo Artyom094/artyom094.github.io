@@ -140,12 +140,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span class="review-user">Usuario: ${username}</span>
                 </div>
                 <p class="review-comment">${review.Comment}</p>
-                <p class="review-image">
-                </p>
                 <div class="review-actions">
                     ${review.Id_User === parseInt(userId) ? ` 
                         <button class="delete-review-btn" data-review-id="${review.Id_Review}">Eliminar</button>
                     ` : ''}
+                    <button class="report-review-btn" data-review-id="${review.Id_Review}">Reportar</button>
                 </div>
             `;
 
@@ -155,6 +154,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 deleteButton.addEventListener('click', () => {
                     const reviewId = deleteButton.getAttribute('data-review-id');
                     deleteReview(reviewId);
+                });
+            }
+
+            // Agregar el evento de reportar reseña
+            const reportButton = reviewElement.querySelector('.report-review-btn');
+            if (reportButton) {
+                reportButton.addEventListener('click', () => {
+                    const reviewId = reportButton.getAttribute('data-review-id');
+                    // Redirigir a la página de reportar con la Id_Review como parámetro en la URL
+                    window.location.href = `reportreview.html?id=${reviewId}`;
                 });
             }
 
@@ -179,3 +188,4 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 });
+

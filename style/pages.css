@@ -90,12 +90,16 @@ body {
 }
 
 /* Lista de Lugares */
-.place-list {
+/* Lista de Lugares y Recomendaciones */
+.place-list,
+.recommended-places-section {
     display: grid;
     gap: 15px;
+    margin-bottom: 30px;
 }
 
-.place-item {
+.place-item,
+.recommendation-item {
     background-color: var(--white);
     border-radius: var(--border-radius);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
@@ -107,7 +111,8 @@ body {
     position: relative;
 }
 
-.place-item::before {
+.place-item::before,
+.recommendation-item::before {
     content: '';
     position: absolute;
     top: 0;
@@ -119,27 +124,62 @@ body {
     transition: var(--transition-fast);
 }
 
-.place-item:hover::before {
+.place-item:hover::before,
+.recommendation-item:hover::before {
     opacity: 1;
 }
 
-.place-item:hover {
+.place-item:hover,
+.recommendation-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.place-item h4 {
-    font-size: 1em;
+/* Textos y contenido */
+.place-item h4,
+.place-item .place-name,
+.recommendation-item .recommendation-name {
+    font-size: 1.1em;
     color: var(--text-primary);
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
-.place-item p {
+.place-item p,
+.recommendation-item .recommendation-category,
+.recommendation-item .recommendation-city,
+.recommendation-item .recommendation-rating {
     color: var(--text-secondary);
     font-size: 0.9em;
     margin-bottom: 5px;
 }
 
+/* Rating específico */
+.place-rating,
+.recommendation-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.place-rating::before,
+.recommendation-rating::before {
+    content: '⭐';
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .place-item,
+    .recommendation-item {
+        padding: 15px;
+    }
+    
+    .place-item h4,
+    .place-item .place-name,
+    .recommendation-item .recommendation-name {
+        font-size: 1em;
+    }
+}
 /* Búsqueda */
 .map-search {
     margin-bottom: 20px;
@@ -293,9 +333,8 @@ body {
 
 
 #map {
+    height: 400px; /* o 100vh si quieres que ocupe toda la pantalla */
     width: 100%;
-    height: 400px; /* Ajusta la altura según lo necesario */
-    border-radius: 10px;
 }
 /* Estilos específicos para reseñas */
 #reviewsContainer {
@@ -686,5 +725,185 @@ body {
 
     .nav-text {
         font-size: 0.7em;
+    }
+}
+
+/* Lista de Recomendaciones */
+.recommended-places-section {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.recommendation-item {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    position: relative;
+}
+
+.recommendation-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    opacity: 0;
+    transition: var(--transition-fast);
+}
+
+.recommendation-item:hover::before {
+    opacity: 1;
+}
+
+.recommendation-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-item .place-name {
+    font-size: 1.1em;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.recommendation-item .place-category,
+.recommendation-item .place-city,
+.recommendation-item .place-rating,
+.recommendation-item .place-created {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.recommendation-item .place-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.recommendation-item .place-rating::before {
+    content: '⭐';
+}
+
+/* Responsive para recomendaciones */
+@media (max-width: 480px) {
+    .recommendation-item {
+        padding: 15px;
+    }
+    
+    .recommendation-item .place-name {
+        font-size: 1em;
+    }
+}
+
+/* Filtros mejorados */
+.filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 0.9em;
+    background-color: var(--white);
+    color: var(--text-primary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: var(--transition-fast);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
+}
+
+/* Específico para el campo de búsqueda */
+#searchInput {
+    grid-column: 1 / -1; /* Hacer que ocupe todo el ancho */
+    background-image: none;
+    padding-right: 15px;
+    margin-bottom: 5px;
+}
+
+.filter-input:focus {
+    outline: none;
+    box-shadow: 0 4px 15px rgba(74, 137, 220, 0.15);
+    border-left: 3px solid var(--primary-color);
+}
+
+.filter-input:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0 60px 0; /* Espacio adicional en la parte inferior para el nav */
+}
+
+.page-button {
+    background-color: var(--white);
+    color: var(--text-primary);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 10px 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: var(--transition-fast);
+}
+
+.page-button:hover:not([disabled]) {
+    background-color: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 137, 220, 0.2);
+}
+
+.page-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#pageNumber {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+}
+
+/* Responsive para filtros */
+@media (max-width: 600px) {
+    .filters {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-input {
+        font-size: 0.85em;
+        padding: 10px 12px;
+        padding-right: 30px;
+    }
+    
+    .page-button {
+        padding: 8px 15px;
+        font-size: 0.85em;
     }
 }

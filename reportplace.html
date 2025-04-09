@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CityVibes - Reportar Lugar</title>
+    <link rel="stylesheet" href="style/pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Estilos específicos para reportar lugar */
+        .report-container {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .report-title {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .report-title::before {
+            content: '⚠️';
+        }
+        
+        #placeDetails {
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        #placeName {
+            font-size: 1.1em;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        #placeCategory, #placeCoordinates {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        #reasonTextarea {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 0.95em;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 150px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            transition: var(--transition-fast);
+        }
+        
+        #reasonTextarea:focus {
+            outline: none;
+            box-shadow: 0 4px 15px rgba(74, 137, 220, 0.15);
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        #reportButton {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: block;
+            width: 100%;
+            font-weight: 500;
+        }
+        
+        #reportButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(74, 137, 220, 0.2);
+        }
+        
+        #errorContainer {
+            color: var(--accent-color);
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: var(--transition-fast);
+        }
+        
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 480px) {
+            .report-container {
+                padding: 15px;
+            }
+            
+            #reasonTextarea {
+                min-height: 120px;
+                padding: 12px;
+            }
+            
+            #reportButton {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header responsive-header">
+            <a href="profile.html" class="avatar responsive-avatar">
+                <img src="img/pp.png" alt="Avatar" id="userAvatar">
+            </a>
+            <h1 class="responsive-title">City Vibes</h1>
+        </div>
+        
+        <div class="content responsive-content">
+            <div class="report-container">
+                <h2 class="report-title">Reportar Lugar</h2>
+                
+                <div id="placeDetails">
+                    <h3 id="placeName">Cargando detalles del lugar...</h3>
+                    <p id="placeCategory"></p>
+                    <p id="placeCoordinates"></p>
+                </div>
+                
+                <textarea id="reasonTextarea" placeholder="Escribe el motivo de tu reporte..."></textarea>
+                <button id="reportButton">Enviar Reporte</button>
+                
+                <div id="errorContainer"></div>
+                
+                <a href="lugar.html" class="back-link" id="backToPlace">← Volver al lugar</a>
+            </div>
+        </div>
+        
+        <nav class="bottom-nav responsive-nav">
+            <a href="index.html" class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="mapa.html" class="nav-item">
+                <div class="nav-icon">🗺️</div>
+                <span class="nav-text">Mapa</span>
+            </a>
+            <a href="resenas.html" class="nav-item">
+                <div class="nav-icon">⭐</div>
+                <span class="nav-text">Reseñas</span>
+            </a>
+        </nav>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="js/reportplace.js"></script>
+    <script>
+        // Script para establecer la URL de regreso correcta
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const placeId = urlParams.get('id');
+            
+            if (placeId) {
+                const backLink = document.getElementById('backToPlace');
+                backLink.href = `lugar.html?id=${placeId}`;
+            }
+        });
+    </script>
+</body>
+</html>
